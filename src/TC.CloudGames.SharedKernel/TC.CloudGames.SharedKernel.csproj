@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Marten" Version="8.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.7" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="2.3.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.SystemTextJson" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Ports\" />
+    <Folder Include="Domain\Enums\" />
+    <Folder Include="Domain\ValueObjects\" />
+  </ItemGroup>
+
+</Project>
