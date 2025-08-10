@@ -8,7 +8,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Ports\" />
     <Folder Include="Domain\Enums\" />
     <Folder Include="Domain\ValueObjects\" />
   </ItemGroup>

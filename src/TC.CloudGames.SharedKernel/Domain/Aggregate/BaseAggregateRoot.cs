@@ -1,8 +1,8 @@
 ﻿namespace TC.CloudGames.SharedKernel.Domain.Aggregate
 {
-    public abstract class BaseAggregate
+    public abstract class BaseAggregateRoot
     {
-        protected readonly List<object> _uncommittedEvents = new();
+        private readonly List<object> _uncommittedEvents = new();
 
         public Guid Id { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -11,11 +11,20 @@
 
         public IReadOnlyList<object> UncommittedEvents => _uncommittedEvents.AsReadOnly();
 
-        protected BaseAggregate(Guid id)
+        protected BaseAggregateRoot(Guid id)
         {
             Id = id;
             CreatedAt = DateTime.UtcNow;
             IsActive = true;
+        }
+
+        protected void AddNewEvent(object @event)
+        {
+            if (@event == null)
+            {
+                throw new ArgumentNullException(nameof(@event), "Event cannot be null");
+            }
+            _uncommittedEvents.Add(@event);
         }
 
         protected void SetId(Guid id)
