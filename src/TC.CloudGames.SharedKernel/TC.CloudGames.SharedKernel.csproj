@@ -5,11 +5,11 @@
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.7" />
     <PackageReference Include="ZiggyCreatures.FusionCache" Version="2.3.0" />
     <PackageReference Include="ZiggyCreatures.FusionCache.Serialization.SystemTextJson" Version="2.3.0" />
+    <PackageReference Include="Ardalis.Result" Version="10.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Domain\Enums\" />
-    <Folder Include="Domain\ValueObjects\" />
   </ItemGroup>
 
 </Project>

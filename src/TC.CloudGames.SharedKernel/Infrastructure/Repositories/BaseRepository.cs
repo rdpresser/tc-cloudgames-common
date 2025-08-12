@@ -2,7 +2,8 @@
 
 namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
 {
-    public abstract class BaseRepository
+    public abstract class BaseRepository<TAggregate>
+        where TAggregate : BaseAggregateRoot
     {
         private readonly IDocumentSession _session;
 
@@ -23,19 +24,19 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
             }
         }
 
-        public async Task<T?> GetByIdAsync<T>(Guid id, CancellationToken cancellationToken = default) where T : class
+        public async Task<TAggregate?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await Session.Events.AggregateStreamAsync<T>(id, token: cancellationToken);
+            return await Session.Events.AggregateStreamAsync<TAggregate>(id, token: cancellationToken);
         }
 
-        protected virtual async Task SaveChangesAsync<T>(Guid streamId, CancellationToken cancellationToken = default, params object[] events) where T : class
+        protected virtual async Task SaveChangesAsync(Guid streamId, CancellationToken cancellationToken = default, params object[] events)
         {
             // Check if this is a new aggregate by reusing GetByIdAsync
-            var existingAggregate = await GetByIdAsync<T>(streamId, cancellationToken);
+            var existingAggregate = await GetByIdAsync(streamId, cancellationToken);
             if (existingAggregate == null)
             {
                 // For new aggregates, start a new stream
-                _session.Events.StartStream<T>(streamId, events);
+                _session.Events.StartStream<TAggregate>(streamId, events);
             }
             else
             {
@@ -46,27 +47,27 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
             await _session.SaveChangesAsync(cancellationToken);
         }
 
-        protected async Task<T> LoadAsync<T>(Guid id, CancellationToken cancellationToken = default) where T : class
+        protected async Task<TAggregate> LoadAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var entity = await Session.LoadAsync<T>(id, cancellationToken);
+            var entity = await Session.LoadAsync<TAggregate>(id, cancellationToken);
             if (entity == null)
             {
-                throw new InvalidOperationException($"Entity of type {typeof(T).Name} with ID {id} not found.");
+                throw new InvalidOperationException($"Entity of type {typeof(TAggregate).Name} with ID {id} not found.");
             }
             return entity;
         }
 
-        protected async Task DeleteAsync<T>(Guid id, CancellationToken cancellationToken = default) where T : class
+        protected async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var entity = await LoadAsync<T>(id, cancellationToken);
+            var entity = await LoadAsync(id, cancellationToken);
             Session.Delete(entity);
-            await SaveChangesAsync<T>(id, cancellationToken);
+            await SaveChangesAsync(id, cancellationToken);
         }
 
-        protected async Task<IEnumerable<T>> QueryAsync<T>(Func<IQueryable<T>, IQueryable<T>> query, CancellationToken cancellationToken = default) where T : class
-        {
-            var result = query(Session.Query<T>());
-            return await result.ToListAsync(cancellationToken);
-        }
+        //protected async Task<IEnumerable<TAggregate>> QueryAsync(Func<IQueryable<TAggregate>, IQueryable<TAggregate>> query, CancellationToken cancellationToken = default)
+        //{
+        //    var result = query(Session.Query<TAggregate>());
+        //    return await result.ToListAsync(cancellationToken);
+        //}
     }
 }
