@@ -63,11 +63,5 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
             Session.Delete(entity);
             await SaveChangesAsync(id, cancellationToken);
         }
-
-        //protected async Task<IEnumerable<TAggregate>> QueryAsync(Func<IQueryable<TAggregate>, IQueryable<TAggregate>> query, CancellationToken cancellationToken = default)
-        //{
-        //    var result = query(Session.Query<TAggregate>());
-        //    return await result.ToListAsync(cancellationToken);
-        //}
     }
 }
