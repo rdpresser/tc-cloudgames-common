@@ -1,3 +1,12 @@
-﻿global using Microsoft.Extensions.Options;
+﻿global using Ardalis.Result;
+global using FastEndpoints;
+global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
+global using Serilog.Context;
+global using System.Diagnostics.CodeAnalysis;
+global using System.Net;
+global using TC.CloudGames.SharedKernel.Application.Commands;
+global using TC.CloudGames.SharedKernel.Application.Ports;
 global using TC.CloudGames.SharedKernel.Domain.Aggregate;
+global using TC.CloudGames.SharedKernel.Infrastructure.Caching.Service;
 global using ZiggyCreatures.Caching.Fusion;

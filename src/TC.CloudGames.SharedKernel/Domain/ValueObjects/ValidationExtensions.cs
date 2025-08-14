@@ -1,6 +1,4 @@
-﻿using Ardalis.Result;
-
-namespace TC.CloudGames.SharedKernel.Domain.ValueObjects
+﻿namespace TC.CloudGames.SharedKernel.Domain.ValueObjects
 {
     public static class ValidationExtensions
     {
