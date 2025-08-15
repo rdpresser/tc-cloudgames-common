@@ -36,15 +36,15 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
             if (existingAggregate == null)
             {
                 // For new aggregates, start a new stream
-                _session.Events.StartStream<TAggregate>(streamId, events);
+                Session.Events.StartStream<TAggregate>(streamId, events);
             }
             else
             {
                 // For existing aggregates, append events to the existing stream
-                _session.Events.Append(streamId, events);
+                Session.Events.Append(streamId, events);
             }
 
-            await _session.SaveChangesAsync(cancellationToken);
+            await Session.SaveChangesAsync(cancellationToken);
         }
 
         protected async Task<TAggregate> LoadAsync(Guid id, CancellationToken cancellationToken = default)
