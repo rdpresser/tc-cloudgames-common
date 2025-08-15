@@ -19,7 +19,6 @@
         {
             ArgumentNullException.ThrowIfNull(context);
 
-
             if (context.HttpContext.Request.Headers.TryGetValue(correlationIdHeader, out var cachedInfo) && cachedInfo == GenerateCacheKey(context))
             {
                 context.HttpContext.Request.Headers.Remove(correlationIdHeader);
@@ -52,7 +51,7 @@
                     context.Response,
                 };
 
-                using (LogContext.PushProperty("Content", responseValues, true))
+                using (LogContext.PushProperty("ResponseContent", responseValues, true))
                 {
                     _logger.LogInformation("Post-processing Request {Request} executed successfully", name);
                 }
@@ -66,7 +65,7 @@
                     Error = context.ValidationFailures
                 };
 
-                using (LogContext.PushProperty("Content", responseValues, true))
+                using (LogContext.PushProperty("ResponseContent", responseValues, true))
                 {
                     _logger.LogError("Post-processing Request {Request} validation failed with error", name);
                 }

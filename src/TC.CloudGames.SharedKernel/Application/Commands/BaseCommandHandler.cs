@@ -1,8 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using System.Linq.Expressions;
-
-namespace TC.CloudGames.SharedKernel.Application.Commands
+﻿namespace TC.CloudGames.SharedKernel.Application.Commands
 {
     [ExcludeFromCodeCoverage]
     public abstract class BaseCommandHandler<TCommand, TResponse, TAggregate, TRepository> : CommandHandler<TCommand, Result<TResponse>>

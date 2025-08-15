@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
-
-namespace TC.CloudGames.SharedKernel.Infrastructure.Middleware
+﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Middleware
 {
     public class CorrelationMiddleware
     {

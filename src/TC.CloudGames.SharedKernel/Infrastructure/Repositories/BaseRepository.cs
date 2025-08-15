@@ -1,6 +1,4 @@
-﻿using Marten;
-
-namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
+﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
 {
     public abstract class BaseRepository<TAggregate>
         where TAggregate : BaseAggregateRoot

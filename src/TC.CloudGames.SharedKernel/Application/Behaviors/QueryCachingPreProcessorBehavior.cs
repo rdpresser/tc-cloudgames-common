@@ -9,8 +9,7 @@
         private readonly ILogger<QueryCachingPreProcessorBehavior<TQuery, TResponse>> _logger;
         private const string correlationIdHeader = "x-cache-correlation-id";
 
-        public QueryCachingPreProcessorBehavior(
-            ICacheService cacheService,
+        public QueryCachingPreProcessorBehavior(ICacheService cacheService,
             ILogger<QueryCachingPreProcessorBehavior<TQuery, TResponse>> logger)
         {
             _cacheService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
@@ -61,7 +60,13 @@
             }
             else
             {
-                using (LogContext.PushProperty("Error", context.ValidationFailures, true))
+                var responseValues = new
+                {
+                    context.Request,
+                    Error = context.ValidationFailures
+                };
+
+                using (LogContext.PushProperty("RequestContent", responseValues, true))
                 {
                     _logger.LogError("Pre-processing Request {Request} validation failed with error", name);
                 }

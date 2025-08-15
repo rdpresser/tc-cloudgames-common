@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace TC.CloudGames.SharedKernel.Infrastructure.Authentication
+﻿namespace TC.CloudGames.SharedKernel.Infrastructure.UserClaims
 {
     public sealed class UserContext : IUserContext
     {
@@ -11,29 +9,35 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Authentication
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Guid UserId =>
+        public Guid Id =>
             _httpContextAccessor
                 .HttpContext?
                 .User
                 .GetUserId() ??
             throw new InvalidOperationException("User context is unavailable");
 
-
-        public string UserEmail =>
-            _httpContextAccessor
-                .HttpContext?
-                .User
-                .GetUserEmail() ??
-            throw new InvalidOperationException("User context is unavailable");
-
-        public string UserName =>
+        public string Name =>
             _httpContextAccessor
                 .HttpContext?
                 .User
                 .GetUserName() ??
             throw new InvalidOperationException("User context is unavailable");
 
-        public string UserRole =>
+        public string Email =>
+            _httpContextAccessor
+                .HttpContext?
+                .User
+                .GetUserEmail() ??
+            throw new InvalidOperationException("User context is unavailable");
+
+        public string Username =>
+            _httpContextAccessor
+                .HttpContext?
+                .User
+                .GetUserUsername() ??
+            throw new InvalidOperationException("User context is unavailable");
+
+        public string Role =>
             _httpContextAccessor
                 .HttpContext?
                 .User

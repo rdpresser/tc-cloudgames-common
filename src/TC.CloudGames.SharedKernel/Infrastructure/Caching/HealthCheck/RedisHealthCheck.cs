@@ -1,7 +1,3 @@
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using StackExchange.Redis;
-using TC.CloudGames.SharedKernel.Infrastructure.Caching.Provider;
-
 namespace TC.CloudGames.SharedKernel.Infrastructure.Caching.HealthCheck;
 
 [ExcludeFromCodeCoverage]

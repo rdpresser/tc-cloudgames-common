@@ -1,8 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using System.Linq.Expressions;
-
-namespace TC.CloudGames.SharedKernel.Application.Queries
+﻿namespace TC.CloudGames.SharedKernel.Application.Queries
 {
     [ExcludeFromCodeCoverage]
     public abstract class BaseQueryHandler<TQuery, TResponse> : CommandHandler<TQuery, Result<TResponse>>

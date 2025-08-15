@@ -1,6 +1,4 @@
-﻿using TC.CloudGames.SharedKernel.Application.Queries;
-
-namespace TC.CloudGames.SharedKernel.Application.Ports
+﻿namespace TC.CloudGames.SharedKernel.Application.Ports
 {
     public interface ICachedQuery<TResponse> : IBaseQuery<TResponse>, ICachedQuery;
 
