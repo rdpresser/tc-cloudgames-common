@@ -1,6 +1,6 @@
 ﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Caching.Service
 {
-    internal sealed class CacheService : ICacheService
+    public sealed class CacheService : ICacheService
     {
         private readonly IFusionCache _fusionCache;
         public CacheService(IFusionCache fusionCache)

@@ -7,8 +7,11 @@
     {
         private readonly ICacheService _cacheService;
         private readonly ILogger<QueryCachingPreProcessorBehavior<TQuery, TResponse>> _logger;
+        private const string correlationIdHeader = "x-cache-correlation-id";
 
-        public QueryCachingPreProcessorBehavior(ICacheService cacheService, ILogger<QueryCachingPreProcessorBehavior<TQuery, TResponse>> logger)
+        public QueryCachingPreProcessorBehavior(
+            ICacheService cacheService,
+            ILogger<QueryCachingPreProcessorBehavior<TQuery, TResponse>> logger)
         {
             _cacheService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -17,48 +20,60 @@
         public async Task PreProcessAsync(IPreProcessorContext<TQuery> context, CancellationToken ct)
         {
             ArgumentNullException.ThrowIfNull(context);
-            var name = context.Request!.GetType().Name;
 
+            var genericType = _logger.GetType().GenericTypeArguments.FirstOrDefault()?.Name ?? "Unknown";
+            var name = context.Request?.GetType().Name
+                       ?? genericType;
 
+            /************************************************
             // Buscar usuário logado com interface IUserContext
             // setar cachekey com o id do usuario
             // context.Request.CacheKey = $"{_userContext.UserId}-{context.Request.CacheKey}"
+            *///////////////////////////////////////////////////////
 
-
-            var cachedResult = await _cacheService.GetAsync<TResponse>(
-                context.Request.CacheKey,
-                context.Request.Duration,
+            if (!context.HasValidationFailures)
+            {
+                var cachedResult = await _cacheService.GetAsync<TResponse>(
+                GenerateCacheKey(context),
+                context.Request!.Duration,
                 context.Request.DistributedCacheDuration,
                 ct);
 
-            if (cachedResult is not null)
-            {
-                _logger.LogInformation("Returning cached result for request: {Request}", name);
+                if (cachedResult is not null)
+                {
+                    using (LogContext.PushProperty("CacheContent", cachedResult, true))
+                    {
+                        _logger.LogInformation("Pre-processing returning cached result for request: {Request}, executed successfully", name);
+                    }
 
-                // retorna direto com HTTP 200 usando padrão do FastEndpoints
-                await context.HttpContext.Response.SendOkAsync(cachedResult, cancellation: ct);
+                    context.HttpContext.Request.Headers[correlationIdHeader] = GenerateCacheKey(context);
+                    await context.HttpContext.Response.SendOkAsync(cachedResult, cancellation: ct);
 
-                // short-circuit: não executa o handler
-                return;
+                    // short-circuit: não executa o handler
+                    return;
+                }
+
+                context.HttpContext.Request.Headers.Remove(correlationIdHeader);
+                using (LogContext.PushProperty("RequestContent", context.Request, true))
+                {
+                    _logger.LogInformation("Pre-processing returning database result for request: {Request}, executed successfully", name);
+                }
             }
-
-            using (LogContext.PushProperty("RequestContent", context.Request, true))
-            {
-                _logger.LogInformation("Pre-processing request: {Request}", name);
-            }
-
-            if (context.HasValidationFailures)
+            else
             {
                 using (LogContext.PushProperty("Error", context.ValidationFailures, true))
                 {
                     _logger.LogError("Pre-processing Request {Request} validation failed with error", name);
                 }
-                return;
             }
 
-            _logger.LogInformation("Pre-processing Request {Request} executed successfully", name);
-
             return;
+        }
+
+        private static string GenerateCacheKey(IPreProcessorContext<TQuery> context)
+        {
+            //add logged user in the future
+            return $"{context.Request!.CacheKey}";
         }
     }
 }
