@@ -20,6 +20,15 @@
 
             if (response.IsNotFound())
             {
+                try
+                {
+                    Response = Activator.CreateInstance<TResponse>();
+                }
+                catch
+                {
+                    Response = default!;
+                }
+
                 await Send.ErrorsAsync((int)HttpStatusCode.NotFound, ct).ConfigureAwait(false);
                 return;
             }
