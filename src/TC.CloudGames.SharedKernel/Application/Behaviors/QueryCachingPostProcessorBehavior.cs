@@ -43,7 +43,7 @@
                     context.Response,
                     context.Request!.Duration,
                     context.Request.DistributedCacheDuration,
-                    ct);
+                    ct).ConfigureAwait(false);
 
                 var responseValues = new
                 {

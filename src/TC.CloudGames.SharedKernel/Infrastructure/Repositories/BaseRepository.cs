@@ -24,7 +24,7 @@
 
         public async Task<TAggregate?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await Session.Events.AggregateStreamAsync<TAggregate>(id, token: cancellationToken);
+            return await Session.Events.AggregateStreamAsync<TAggregate>(id, token: cancellationToken).ConfigureAwait(false);
         }
 
         protected virtual async Task SaveChangesAsync(Guid streamId, CancellationToken cancellationToken = default, params object[] events)

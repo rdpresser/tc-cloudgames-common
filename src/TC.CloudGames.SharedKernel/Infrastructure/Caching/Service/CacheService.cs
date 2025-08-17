@@ -17,7 +17,7 @@
                 key,
                 default(T),
                 CacheServiceOptions.Create(duration, distributedCacheDuration),
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
 
         public async Task SetAsync<T>(
@@ -31,7 +31,7 @@
                 key,
                 value,
                 CacheServiceOptions.Create(duration, distributedCacheDuration),
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
 
         public async Task RemoveAsync(
@@ -43,7 +43,7 @@
             await _fusionCache.RemoveAsync(
                 key,
                 CacheServiceOptions.Create(duration, distributedCacheDuration),
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
     }
 }

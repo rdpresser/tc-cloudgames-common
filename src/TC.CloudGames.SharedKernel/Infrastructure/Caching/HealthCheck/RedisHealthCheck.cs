@@ -14,11 +14,11 @@ public class RedisHealthCheck : IHealthCheck
     {
         try
         {
-            using var connection = await ConnectionMultiplexer.ConnectAsync(_cacheProvider.ConnectionString);
+            using var connection = await ConnectionMultiplexer.ConnectAsync(_cacheProvider.ConnectionString).ConfigureAwait(false);
             var database = connection.GetDatabase();
 
             // Simple ping test
-            var result = await database.PingAsync();
+            var result = await database.PingAsync().ConfigureAwait(false);
 
             if (result.TotalMilliseconds > 1000)
             {

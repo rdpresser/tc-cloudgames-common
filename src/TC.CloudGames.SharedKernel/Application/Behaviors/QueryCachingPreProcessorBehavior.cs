@@ -36,7 +36,7 @@
                 GenerateCacheKey(context),
                 context.Request!.Duration,
                 context.Request.DistributedCacheDuration,
-                ct);
+                ct).ConfigureAwait(false);
 
                 if (cachedResult is not null)
                 {
