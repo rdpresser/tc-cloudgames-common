@@ -1,7 +1,9 @@
-﻿namespace TC.CloudGames.SharedKernel.Application.Behaviors
+﻿using TC.CloudGames.SharedKernel.Infrastructure.UserClaims;
+
+namespace TC.CloudGames.SharedKernel.Application.Behaviors
 {
     [ExcludeFromCodeCoverage]
-    public class QueryCachingPostProcessorBehavior<TQuery, TResponse> : IPostProcessor<TQuery, TResponse>
+    public sealed class QueryCachingPostProcessorBehavior<TQuery, TResponse> : IPostProcessor<TQuery, TResponse>
         where TQuery : ICachedQuery<TResponse>
         where TResponse : class
     {
@@ -9,7 +11,8 @@
         private readonly ILogger<QueryCachingPostProcessorBehavior<TQuery, TResponse>> _logger;
         private const string correlationIdHeader = "x-cache-correlation-id";
 
-        public QueryCachingPostProcessorBehavior(ICacheService cacheService, ILogger<QueryCachingPostProcessorBehavior<TQuery, TResponse>> logger)
+        public QueryCachingPostProcessorBehavior(ICacheService cacheService,
+            ILogger<QueryCachingPostProcessorBehavior<TQuery, TResponse>> logger)
         {
             _cacheService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -76,8 +79,10 @@
 
         private static string GenerateCacheKey(IPostProcessorContext<TQuery, TResponse> context)
         {
-            //add logged user in the future
-            return $"{context.Request!.CacheKey}";
+            var _userContext = context.HttpContext.RequestServices.GetRequiredService<IUserContext>();
+            context.Request!.SetCacheKey($"-{_userContext.Id}-{_userContext.Username}");
+
+            return context.Request.GetCacheKey;
         }
     }
 }

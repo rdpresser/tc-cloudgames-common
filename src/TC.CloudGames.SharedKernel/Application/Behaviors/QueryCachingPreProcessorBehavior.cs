@@ -1,4 +1,6 @@
-﻿namespace TC.CloudGames.SharedKernel.Application.Behaviors
+﻿using TC.CloudGames.SharedKernel.Infrastructure.UserClaims;
+
+namespace TC.CloudGames.SharedKernel.Application.Behaviors
 {
     [ExcludeFromCodeCoverage]
     public sealed class QueryCachingPreProcessorBehavior<TQuery, TResponse> : IPreProcessor<TQuery>
@@ -23,12 +25,6 @@
             var genericType = _logger.GetType().GenericTypeArguments.FirstOrDefault()?.Name ?? "Unknown";
             var name = context.Request?.GetType().Name
                        ?? genericType;
-
-            /************************************************
-            // Buscar usuário logado com interface IUserContext
-            // setar cachekey com o id do usuario
-            // context.Request.CacheKey = $"{_userContext.UserId}-{context.Request.CacheKey}"
-            *///////////////////////////////////////////////////////
 
             if (!context.HasValidationFailures)
             {
@@ -77,8 +73,10 @@
 
         private static string GenerateCacheKey(IPreProcessorContext<TQuery> context)
         {
-            //add logged user in the future
-            return $"{context.Request!.CacheKey}";
+            var _userContext = context.HttpContext.RequestServices.GetRequiredService<IUserContext>();
+            context.Request!.SetCacheKey($"-{_userContext.Id}-{_userContext.Username}");
+
+            return context.Request.GetCacheKey;
         }
     }
 }

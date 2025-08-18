@@ -4,7 +4,8 @@
 
     public interface ICachedQuery
     {
-        string CacheKey { get; }
+        string GetCacheKey { get; }
+        void SetCacheKey(string cacheKey);
 
         TimeSpan? Duration { get; }
         TimeSpan? DistributedCacheDuration { get; }
