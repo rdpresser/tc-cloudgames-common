@@ -3,45 +3,50 @@
     public sealed class UserContext : IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICorrelationIdGenerator _correlationId;
 
-        public UserContext(IHttpContextAccessor httpContextAccessor)
+        public UserContext(IHttpContextAccessor httpContextAccessor, ICorrelationIdGenerator correlationId)
         {
             _httpContextAccessor = httpContextAccessor;
+            _correlationId = correlationId;
         }
 
         public Guid Id =>
-            _httpContextAccessor
-                .HttpContext?
-                .User
-                .GetUserId() ??
-            throw new InvalidOperationException("User context is unavailable");
+            IsAuthenticated
+                ? _httpContextAccessor.HttpContext?.User.GetUserId() ?? Guid.Empty
+                : Guid.Empty;
 
         public string Name =>
-            _httpContextAccessor
-                .HttpContext?
-                .User
-                .GetUserName() ??
-            throw new InvalidOperationException("User context is unavailable");
+            IsAuthenticated
+                ? _httpContextAccessor.HttpContext?.User.GetUserName() ?? "Anonymous"
+                : "Anonymous";
 
         public string Email =>
-            _httpContextAccessor
-                .HttpContext?
-                .User
-                .GetUserEmail() ??
-            throw new InvalidOperationException("User context is unavailable");
+            IsAuthenticated
+                ? _httpContextAccessor.HttpContext?.User.GetUserEmail() ?? "anonymous@cloudgames.local"
+                : "anonymous@cloudgames.local";
 
         public string Username =>
-            _httpContextAccessor
-                .HttpContext?
-                .User
-                .GetUserUsername() ??
-            throw new InvalidOperationException("User context is unavailable");
+            IsAuthenticated
+                ? _httpContextAccessor.HttpContext?.User.GetUserUsername() ?? "anonymous"
+                : "anonymous";
 
         public string Role =>
+            IsAuthenticated
+                ? _httpContextAccessor.HttpContext?.User.GetUserRole() ?? "Guest"
+                : "Guest";
+
+        public string? CorrelationId =>
+            _correlationId.CorrelationId;
+
+        public Guid? TenantId =>
+            Guid.NewGuid(); // Implementação futura para multi-tenant
+
+        public bool IsAuthenticated =>
             _httpContextAccessor
                 .HttpContext?
                 .User
-                .GetUserRole() ??
-            throw new InvalidOperationException("User context is unavailable");
+                .Identity?
+                .IsAuthenticated ?? false;
     }
 }

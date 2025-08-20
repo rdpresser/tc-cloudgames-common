@@ -1,3 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <ItemGroup>
+    <Folder Include="Events\Games\" />
+    <Folder Include="Events\Payments\" />
+  </ItemGroup>
 </Project>

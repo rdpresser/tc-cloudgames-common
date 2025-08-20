@@ -1,69 +1,70 @@
-﻿namespace TC.CloudGames.SharedKernel.Domain.Events
+﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Message
 {
-    public record EventEnvelope<TEventContext> where TEventContext : EventContext<BaseEvent>
+    // Envelope de transporte (para mensageria). Não é conhecido pelo domínio.
+    public record EventEnvelope<TEvent, TAggregate>
+        where TEvent : class
+        where TAggregate : BaseAggregateRoot
     {
-        public TEventContext EventContextData { get; init; }
+        public EventContext<TEvent, TAggregate> EventContextData { get; init; }
         public Guid EnvelopeId { get; init; } = Guid.NewGuid();
         public DateTime PublishedAt { get; init; } = DateTime.UtcNow;
-        public string? RoutingKey { get; init; }
+        public string RoutingKey { get; init; }
         public IDictionary<string, object>? Headers { get; init; }
 
-        private EventEnvelope(TEventContext data)
+        private EventEnvelope(EventContext<TEvent, TAggregate> data, string routingKey, IDictionary<string, object>? headers)
         {
             EventContextData = data;
+            RoutingKey = routingKey;
+            Headers = headers;
         }
 
         /// <summary>
         /// Factory method para criar EventEnvelope completo
         /// </summary>
-        public static EventEnvelope<TEventContext> Create(
-            TEventContext eventContext,
+        public static EventEnvelope<TEvent, TAggregate> Create(
+            EventContext<TEvent, TAggregate> eventContext,
             string? routingKey = null,
             IDictionary<string, object>? headers = null)
         {
-            return new EventEnvelope<TEventContext>(eventContext)
-            {
-                RoutingKey = routingKey ?? GenerateRoutingKey(eventContext),
-                Headers = MergeHeaders(eventContext, headers)
-            };
+            var finalRoutingKey = routingKey ?? GenerateRoutingKey(eventContext);
+            var finalHeaders = MergeHeaders(eventContext, headers);
+            return new EventEnvelope<TEvent, TAggregate>(eventContext, finalRoutingKey, finalHeaders);
         }
 
         /// <summary>
         /// Factory method para eventos de domínio específicos
         /// </summary>
-        public static EventEnvelope<TEventContext> CreateForDomainEvent(
-            TEventContext eventContext,
+        public static EventEnvelope<TEvent, TAggregate> CreateForDomainEvent(
+            EventContext<TEvent, TAggregate> eventContext,
             string? customRoutingKey = null)
         {
             var routingKey = customRoutingKey ?? GenerateRoutingKey(eventContext);
             var headers = new Dictionary<string, object>
             {
-                { "aggregate-type", eventContext.EventData.GetType().Name },
+                { "aggregate-type", eventContext.AggregateType },
                 { "aggregate-id", eventContext.AggregateId.ToString() },
                 { "event-type", eventContext.EventType },
                 { "event-version", eventContext.Version },
                 { "correlation-id", eventContext.CorrelationId ?? string.Empty },
-                { "source", eventContext.Source ?? "Unknown" }
+                { "source", eventContext.Source ?? "Unknown" },
+                { "occurred-at", eventContext.OccurredAt.ToString("O") },
             };
 
-            return new EventEnvelope<TEventContext>(eventContext)
-            {
-                RoutingKey = routingKey,
-                Headers = headers
-            };
+            return new EventEnvelope<TEvent, TAggregate>(eventContext, routingKey, headers);
         }
 
-        private static string GenerateRoutingKey(TEventContext eventContext)
+        private static string GenerateRoutingKey(EventContext<TEvent, TAggregate> eventContext)
         {
-            var aggregateType = eventContext.EventData.GetType().Name.Replace("Aggregate", "").ToLowerInvariant();
+            var aggregateType = eventContext.AggregateType.Replace("Aggregate", "").ToLowerInvariant();
             var eventType = eventContext.EventType.Replace("Event", "").ToLowerInvariant();
             return $"{aggregateType}.{eventType}";
         }
 
-        private static IDictionary<string, object>? MergeHeaders(TEventContext eventContext, IDictionary<string, object>? customHeaders)
+        private static IDictionary<string, object> MergeHeaders(EventContext<TEvent, TAggregate> eventContext, IDictionary<string, object>? customHeaders)
         {
             var defaultHeaders = new Dictionary<string, object>
             {
+                { "aggregate-type", eventContext.AggregateType },
                 { "aggregate-id", eventContext.AggregateId.ToString() },
                 { "event-type", eventContext.EventType },
                 { "occurred-at", eventContext.OccurredAt.ToString("O") }

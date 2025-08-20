@@ -1,15 +1,17 @@
-﻿namespace TC.CloudGames.SharedKernel.Domain.Aggregate
+﻿using TC.CloudGames.SharedKernel.Domain.Events;
+
+namespace TC.CloudGames.SharedKernel.Domain.Aggregate
 {
     public abstract class BaseAggregateRoot
     {
-        private readonly List<object> _uncommittedEvents = new();
+        private readonly List<BaseDomainEvent> _uncommittedEvents = new();
 
         public Guid Id { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public bool IsActive { get; private set; }
 
-        public IReadOnlyList<object> UncommittedEvents => _uncommittedEvents.AsReadOnly();
+        public IReadOnlyList<BaseDomainEvent> UncommittedEvents => _uncommittedEvents.AsReadOnly();
 
         protected BaseAggregateRoot(Guid id)
         {
@@ -18,7 +20,7 @@
             IsActive = true;
         }
 
-        protected void AddNewEvent(object @event)
+        protected void AddNewEvent(BaseDomainEvent @event)
         {
             if (@event == null)
             {

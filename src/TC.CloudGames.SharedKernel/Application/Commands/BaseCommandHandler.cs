@@ -1,4 +1,6 @@
-﻿namespace TC.CloudGames.SharedKernel.Application.Commands
+﻿using TC.CloudGames.SharedKernel.Infrastructure.UserClaims;
+
+namespace TC.CloudGames.SharedKernel.Application.Commands
 {
     [ExcludeFromCodeCoverage]
     public abstract class BaseCommandHandler<TCommand, TResponse, TAggregate, TRepository> : CommandHandler<TCommand, Result<TResponse>>
@@ -8,12 +10,14 @@
         where TRepository : IBaseRepository<TAggregate>
     {
         protected TRepository Repository { get; }
+        protected IUserContext UserContext { get; }
 
         private FastEndpoints.ValidationContext<TCommand> ValidationContext { get; } = Instance;
 
-        protected BaseCommandHandler(TRepository repository)
+        protected BaseCommandHandler(TRepository repository, IUserContext userContext)
         {
-            Repository = repository;
+            Repository = repository ?? throw new ArgumentNullException(nameof(repository), "Repository cannot be null");
+            UserContext = userContext ?? throw new ArgumentNullException(nameof(userContext), "User context cannot be null");
         }
 
         /// <summary>

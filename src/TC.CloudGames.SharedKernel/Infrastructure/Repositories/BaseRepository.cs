@@ -1,6 +1,6 @@
 ﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Repositories
 {
-    public abstract class BaseRepository<TAggregate>
+    public abstract class BaseRepository<TAggregate> : IBaseRepository<TAggregate>
         where TAggregate : BaseAggregateRoot
     {
         private readonly IDocumentSession _session;
@@ -22,44 +22,84 @@
             }
         }
 
-        public async Task<TAggregate?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default)
         {
-            return await Session.Events.AggregateStreamAsync<TAggregate>(id, token: cancellationToken).ConfigureAwait(false);
+            return await Session.Events.AggregateStreamAsync<TAggregate>(aggregateId, token: cancellationToken).ConfigureAwait(false);
         }
 
-        protected virtual async Task SaveChangesAsync(Guid streamId, CancellationToken cancellationToken = default, params object[] events)
+        public abstract Task<IEnumerable<TAggregate>> GetAllAsync(CancellationToken cancellationToken = default);
+
+        ////private async Task SaveChangesAsync(Guid aggregateId, CancellationToken cancellationToken = default, params object[] events)
+        ////{
+        ////    await InsertOrUpdateAsync(aggregateId, cancellationToken, events).ConfigureAwait(false);
+
+        ////    await Session.SaveChangesAsync(cancellationToken);
+        ////}
+
+        public async Task InsertOrUpdateAsync(Guid aggregateId, CancellationToken cancellationToken = default, params object[] events)
         {
             // Check if this is a new aggregate by reusing GetByIdAsync
-            var existingAggregate = await GetByIdAsync(streamId, cancellationToken);
+            var existingAggregate = await GetByIdAsync(aggregateId, cancellationToken);
             if (existingAggregate == null)
             {
                 // For new aggregates, start a new stream
-                Session.Events.StartStream<TAggregate>(streamId, events);
+                Session.Events.StartStream<TAggregate>(aggregateId, events);
             }
             else
             {
                 // For existing aggregates, append events to the existing stream
-                Session.Events.Append(streamId, events);
+                Session.Events.Append(aggregateId, events);
             }
-
-            await Session.SaveChangesAsync(cancellationToken);
         }
 
-        protected async Task<TAggregate> LoadAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<TAggregate> LoadAsync(Guid aggregateId, CancellationToken cancellationToken = default)
         {
-            var entity = await Session.LoadAsync<TAggregate>(id, cancellationToken);
+            var entity = await Session.LoadAsync<TAggregate>(aggregateId, cancellationToken);
             if (entity == null)
             {
-                throw new InvalidOperationException($"Entity of type {typeof(TAggregate).Name} with ID {id} not found.");
+                throw new InvalidOperationException($"Entity of type {typeof(TAggregate).Name} with ID {aggregateId} not found.");
             }
             return entity;
         }
 
-        protected async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(Guid aggregateId, CancellationToken cancellationToken = default)
         {
-            var entity = await LoadAsync(id, cancellationToken);
+            var entity = await LoadAsync(aggregateId, cancellationToken);
             Session.Delete(entity);
-            await SaveChangesAsync(id, cancellationToken);
+            await Session.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task SaveAsync(TAggregate aggregate, CancellationToken cancellationToken = default)
+        {
+            if (aggregate.UncommittedEvents.Any())
+            {
+                ////await InsertOrUpdateAsync(aggregate.Id, cancellationToken, [.. aggregate.UncommittedEvents]).ConfigureAwait(false);
+
+                await Session.SaveChangesAsync(cancellationToken);
+
+                ////await SaveChangesAsync(aggregate.Id, cancellationToken, [.. aggregate.UncommittedEvents]).ConfigureAwait(false);
+                aggregate.MarkEventsAsCommitted();
+            }
+        }
+
+        ////public async Task SaveAsync<TEvent>(TAggregate aggregate, IEnumerable<EventContext<TEvent, TAggregate>> contexts, CancellationToken cancellationToken = default)
+        ////    where TEvent : class
+        ////{
+        ////    var pureEvents = aggregate.UncommittedEvents.ToArray();
+        ////    if (pureEvents.Length == 0)
+        ////        return;
+
+        ////    await InsertOrUpdateAsync(aggregate.Id, cancellationToken, pureEvents).ConfigureAwait(false);
+
+        ////    foreach (var ctx in contexts)
+        ////    {
+        ////        var envelope = EventEnvelope<TEvent, TAggregate>.CreateForDomainEvent(ctx);
+        ////        _logger.LogDebug("Publishing envelope Id {EnvelopeId} with routing key {RoutingKey}", envelope.EnvelopeId, envelope.RoutingKey);
+        ////        await _bus.PublishAsync(envelope);
+        ////    }
+
+        ////    await Session.SaveChangesAsync(cancellationToken);
+        ////    aggregate.MarkEventsAsCommitted();
+        ////}
     }
 }

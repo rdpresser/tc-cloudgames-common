@@ -7,5 +7,9 @@
         string Email { get; }
         string Username { get; }
         string Role { get; }
+
+        string? CorrelationId { get; }
+        Guid? TenantId { get; }
+        bool IsAuthenticated { get; }
     }
 }
