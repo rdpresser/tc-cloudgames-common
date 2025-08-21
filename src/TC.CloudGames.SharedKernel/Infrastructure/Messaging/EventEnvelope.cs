@@ -1,4 +1,4 @@
-﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Message
+﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Messaging
 {
     // Envelope de transporte (para mensageria). Não é conhecido pelo domínio.
     public record EventEnvelope<TEvent, TAggregate>

@@ -4,6 +4,5 @@
     {
         string ConnectionString { get; }
         string MaintenanceConnectionString { get; }
-        string OutboxConnectionString { get; }
     }
 }

@@ -2,80 +2,38 @@
 {
     public sealed class ConnectionStringProvider : IConnectionStringProvider
     {
-        private readonly DatabaseSettings _dbSettings;
+        private readonly PostgresOptions _dbSettings;
 
-        public ConnectionStringProvider(IOptions<DatabaseSettings> dbSettings)
+        public ConnectionStringProvider(IOptions<PostgresOptions> dbSettings)
         {
             _dbSettings = dbSettings.Value;
         }
 
-        public string ConnectionString
+        public string ConnectionString => BuildConnectionString(
+            envDatabaseName: "DB_NAME",
+            fallbackDatabase: _dbSettings.Database
+        );
+
+        public string MaintenanceConnectionString => BuildConnectionString(
+            envDatabaseName: "DB_MAINTENANCE_NAME",
+            fallbackDatabase: _dbSettings.MaintenanceDatabase
+        );
+
+        private string BuildConnectionString(string envDatabaseName, string fallbackDatabase)
         {
-            get
-            {
-                var host = Environment.GetEnvironmentVariable("DB_HOST")
-                    ?? _dbSettings.Host;
+            var host = Environment.GetEnvironmentVariable("DB_HOST") ?? _dbSettings.Host;
 
-                var port = Environment.GetEnvironmentVariable("DB_PORT")
-                    ?? _dbSettings.Port;
+            var port = int.TryParse(Environment.GetEnvironmentVariable("DB_PORT"), out var p)
+                ? p
+                : _dbSettings.Port;
 
-                var database = Environment.GetEnvironmentVariable("DB_NAME")
-                    ?? _dbSettings.Name;
+            var database = Environment.GetEnvironmentVariable(envDatabaseName) ?? fallbackDatabase;
 
-                var username = Environment.GetEnvironmentVariable("DB_USER")
-                    ?? _dbSettings.User;
+            var username = Environment.GetEnvironmentVariable("DB_USER") ?? _dbSettings.UserName;
 
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD")
-                    ?? _dbSettings.Password;
+            var password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? _dbSettings.Password;
 
-                return $"Host={host};Port={port};Database={database};Username={username};Password={password}";
-            }
-        }
-
-        public string OutboxConnectionString
-        {
-            get
-            {
-                var host = Environment.GetEnvironmentVariable("DB_HOST")
-                    ?? _dbSettings.Host;
-
-                var port = Environment.GetEnvironmentVariable("DB_PORT")
-                    ?? _dbSettings.Port;
-
-                var database = Environment.GetEnvironmentVariable("DB_OUTBOX_NAME")
-                    ?? _dbSettings.OutboxDatabase;
-
-                var username = Environment.GetEnvironmentVariable("DB_USER")
-                    ?? _dbSettings.User;
-
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD")
-                    ?? _dbSettings.Password;
-
-                return $"Host={host};Port={port};Database={database};Username={username};Password={password}";
-            }
-        }
-
-        public string MaintenanceConnectionString
-        {
-            get
-            {
-                var host = Environment.GetEnvironmentVariable("DB_HOST")
-                    ?? _dbSettings.Host;
-
-                var port = Environment.GetEnvironmentVariable("DB_PORT")
-                    ?? _dbSettings.Port;
-
-                var database = Environment.GetEnvironmentVariable("DB_MAINTENANCE_NAME")
-                    ?? _dbSettings.MaintenanceDatabase;
-
-                var username = Environment.GetEnvironmentVariable("DB_USER")
-                    ?? _dbSettings.User;
-
-                var password = Environment.GetEnvironmentVariable("DB_PASSWORD")
-                    ?? _dbSettings.Password;
-
-                return $"Host={host};Port={port};Database={database};Username={username};Password={password}";
-            }
+            return $"Host={host};Port={port};Database={database};Username={username};Password={password}";
         }
     }
 }

@@ -7,7 +7,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Database
         public async static Task EnsureDatabaseExists(IConnectionStringProvider connectionStringProvider)
         {
             var maintenanceConnStr = connectionStringProvider.MaintenanceConnectionString;
-            var targetConnStr = connectionStringProvider.OutboxConnectionString;
+            var targetConnStr = connectionStringProvider.ConnectionString;
 
             // Parse database name and user from connection string
             var builder = new NpgsqlConnectionStringBuilder(targetConnStr);

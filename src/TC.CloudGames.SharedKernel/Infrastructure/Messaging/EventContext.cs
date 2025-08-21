@@ -1,11 +1,11 @@
-﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Message
+﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Messaging
 {
     public record EventContext<TEvent, TAggregate>
         where TEvent : class
         where TAggregate : BaseAggregateRoot
     {
         public TEvent EventData { get; init; }
-        public Guid EventId { get; init; } = Guid.NewGuid();
+        public Guid MessageId { get; init; } = Guid.NewGuid();
         public DateTime OccurredAt { get; init; } = DateTime.UtcNow;
         public Guid AggregateId { get; init; }
         public string? UserId { get; init; }
