@@ -1,42 +1,51 @@
 ﻿namespace TC.CloudGames.SharedKernel.Application.Ports
 {
-    public interface IBaseRepository<TAggregate>
-        where TAggregate : BaseAggregateRoot
+    /// <summary>
+    /// Generic abstraction for repositories responsible for persisting aggregate roots.
+    /// Defines a contract that hides persistence details (Marten, EF, etc.) 
+    /// while exposing consistent operations for aggregates.
+    /// </summary>
+    public interface IBaseRepository<TAggregate> where TAggregate : BaseAggregateRoot
     {
         /// <summary>
-        /// Retrieves an aggregate by its ID. Returns null if not found.
+        /// Retrieves an aggregate by its unique identifier. 
+        /// Returns null if the aggregate does not exist.
         /// </summary>
         Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Saves the aggregate's uncommitted events to the Event Store.
-        /// Does not necessarily commit the session.
+        /// Saves the aggregate state (including new domain events if any).
+        /// May be optimized to avoid flushing the session if nothing changed.
         /// </summary>
         Task SaveAsync(TAggregate aggregate, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Persists the aggregate state, including domain events and any Wolverine outbox messages
-        /// enlisted in the current session. Always flushes the Marten session even if there are no new events.
+        /// Explicit semantic alias for <see cref="SaveAsync"/> that always flushes the session,
+        /// ensuring all domain events and outbox messages are persisted, 
+        /// even if the aggregate has no new changes.
         /// </summary>
         Task PersistAsync(TAggregate aggregate, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Commits the previously saved events by applying SaveChanges on the Marten session.
+        /// Commits any pending operations for the aggregate, ensuring consistency 
+        /// across domain events and the outbox (Wolverine integration).
         /// </summary>
         Task CommitAsync(TAggregate aggregate, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Retrieves all aggregates.
+        /// Retrieves all aggregates of this type.
+        /// Use with caution as this may be expensive for large datasets.
         /// </summary>
         Task<IEnumerable<TAggregate>> GetAllAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Deletes the aggregate by ID and persists the deletion.
+        /// Permanently deletes the aggregate identified by its ID.
         /// </summary>
         Task DeleteAsync(Guid aggregateId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Loads the aggregate by ID. Throws an exception if not found.
+        /// Loads the aggregate by its ID, throwing if it does not exist.
+        /// Useful when the existence of the aggregate is guaranteed or required.
         /// </summary>
         Task<TAggregate> LoadAsync(Guid aggregateId, CancellationToken cancellationToken = default);
     }
