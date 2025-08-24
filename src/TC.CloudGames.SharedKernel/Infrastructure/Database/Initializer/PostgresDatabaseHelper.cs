@@ -1,6 +1,6 @@
 ﻿using Npgsql;
 
-namespace TC.CloudGames.SharedKernel.Infrastructure.Database
+namespace TC.CloudGames.SharedKernel.Infrastructure.Database.Initializer
 {
     public static class PostgresDatabaseHelper
     {

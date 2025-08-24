@@ -4,7 +4,7 @@
     {
         public string Host { get; set; } = "localhost";
         public int Port { get; set; } = 5432;
-        public string Database { get; set; } = "tc_cloudgames_user";
+        public string Database { get; set; } = "tc-cloudgames-users-db";
         public string MaintenanceDatabase { get; set; } = "postgres";
         public string UserName { get; set; } = "postgres";
         public string Password { get; set; } = "postgres";
