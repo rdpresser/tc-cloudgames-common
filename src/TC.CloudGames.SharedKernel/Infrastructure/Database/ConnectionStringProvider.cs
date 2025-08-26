@@ -33,7 +33,9 @@
 
             var password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? _dbSettings.Password;
 
-            return $"Host={host};Port={port};Database={database};Username={username};Password={password}";
+            var connectionTimeout = _dbSettings.ConnectionTimeout;
+
+            return $"Host={host};Port={port};Database={database};Username={username};Password={password};Timeout={connectionTimeout};CommandTimeout={connectionTimeout}";
         }
     }
 }
