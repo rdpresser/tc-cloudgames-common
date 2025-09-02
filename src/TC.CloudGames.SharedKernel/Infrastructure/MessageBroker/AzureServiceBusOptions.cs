@@ -4,7 +4,7 @@
     {
         public string ConnectionString { get; set; } = string.Empty;
         public string TopicName { get; set; } = "user-events";
-        public string SubscriptionName { get; set; } = "default";
+        public string SubscriptionName { get; set; } = "fanout-subscription";
         public bool AutoProvision { get; set; } = true;
         public bool AutoPurgeOnStartup { get; set; } = false;
         public bool UseControlQueues { get; set; } = true;

@@ -41,6 +41,14 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             ServiceBusSettings.EnableDeadLettering = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_ENABLEDLQ"), out var dlq)
                                                     ? dlq
                                                     : ServiceBusSettings.EnableDeadLettering;
+
+            ServiceBusSettings.AutoPurgeOnStartup = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTOPURGE"), out var purge)
+                                                    ? purge
+                                                    : ServiceBusSettings.AutoPurgeOnStartup;
+
+            ServiceBusSettings.UseControlQueues = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_USECONTROLQUEUES"), out var control)
+                                                    ? control
+                                                    : ServiceBusSettings.UseControlQueues;
         }
 
         // --------------------------------------------------
