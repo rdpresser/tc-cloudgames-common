@@ -7,11 +7,11 @@
     /// </summary>
     public interface IBaseRepository<TAggregate> where TAggregate : BaseAggregateRoot
     {
-        /// <summary>
-        /// Retrieves an aggregate by its unique identifier. 
-        /// Returns null if the aggregate does not exist.
-        /// </summary>
-        Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default);
+        /////// <summary>
+        /////// Retrieves an aggregate by its unique identifier. 
+        /////// Returns null if the aggregate does not exist.
+        /////// </summary>
+        ////Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Saves the aggregate state (including new domain events if any).
