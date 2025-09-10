@@ -14,9 +14,9 @@
                 options.User.Claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.Username));
                 options.User.Claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
                 options.User.Roles.Add(user.Role);
+                options.User.Claims.AddRange(_jwtSettings.Audience.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
                 options.ExpireAt = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationInMinutes);
                 options.Issuer = _jwtSettings.Issuer;
-                options.Audience = _jwtSettings.Audience;
             });
 
             return token;
