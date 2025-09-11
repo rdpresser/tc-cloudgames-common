@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using TC.CloudGames.SharedKernel.Infrastructure.Middleware;
-
-namespace TC.CloudGames.SharedKernel.Extensions
+﻿namespace TC.CloudGames.SharedKernel.Extensions
 {
     public static class ServiceCollectionExtensions
     {
