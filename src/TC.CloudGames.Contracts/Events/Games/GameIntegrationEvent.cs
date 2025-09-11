@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TC.CloudGames.Contracts.Events.Games
+﻿namespace TC.CloudGames.Contracts.Events.Games
 {
     // ------------------------------------------------------------------------------------
     // Integration Events
