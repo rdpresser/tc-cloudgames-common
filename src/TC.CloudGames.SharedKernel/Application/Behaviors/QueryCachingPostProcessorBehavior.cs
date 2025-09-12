@@ -32,13 +32,6 @@ namespace TC.CloudGames.SharedKernel.Application.Behaviors
             var name = context.Request?.GetType().Name
                        ?? genericType;
 
-            /************************************************
-            // Buscar usuário logado com interface IUserContext
-            // setar cachekey com o id do usuario
-            // context.Request.CacheKey = $"{_userContext.UserId}-{context.Request.CacheKey}"
-            // dessa forma será possivel pegar o cache especifico do usuário logado
-            *///////////////////////////////////////////////////////
-
             if (!context.HasValidationFailures)
             {
                 await _cacheService.SetAsync(
