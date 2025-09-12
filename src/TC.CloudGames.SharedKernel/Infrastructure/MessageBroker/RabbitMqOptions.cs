@@ -8,7 +8,7 @@
         public string UserName { get; set; } = "guest";
         public string Password { get; set; } = "guest";
 
-        public string Exchange { get; set; } = "user.events";
+        public string Exchange { get; set; } = "unknown.events";
         public bool AutoProvision { get; set; } = true;
         public bool Durable { get; set; } = true;
         public bool UseQuorumQueues { get; set; } = false;
