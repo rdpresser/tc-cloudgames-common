@@ -10,7 +10,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Messaging
             if (envelope.Message is null) return;
 
             var messageType = envelope.Message.GetType();
-            if (!messageType.IsGenericType || messageType.GetGenericTypeDefinition() != typeof(EventContext<,>))
+            if (!messageType.IsGenericType || messageType.GetGenericTypeDefinition() != typeof(EventContext<>))
                 return;
 
             dynamic context = envelope.Message;

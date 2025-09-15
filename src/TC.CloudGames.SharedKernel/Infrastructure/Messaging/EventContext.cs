@@ -1,8 +1,9 @@
-﻿namespace TC.CloudGames.SharedKernel.Infrastructure.Messaging
+﻿using System.Text.Json.Serialization;
+
+namespace TC.CloudGames.SharedKernel.Infrastructure.Messaging
 {
-    public record EventContext<TEvent, TAggregate>
+    public record EventContext<TEvent>
         where TEvent : class
-        where TAggregate : BaseAggregateRoot
     {
         public TEvent EventData { get; init; }
         public Guid MessageId { get; init; } = Guid.NewGuid();
@@ -13,32 +14,69 @@
         public string? CorrelationId { get; init; }
         public string? Source { get; init; }
         public string EventType { get; init; } = typeof(TEvent).Name;
-        public string AggregateType { get; init; } = typeof(TAggregate).Name;
+        public string AggregateType { get; init; } = string.Empty;
         public int Version { get; init; } = 1;
         public IDictionary<string, object>? Metadata { get; init; }
 
-        private EventContext(TEvent data, Guid aggregateId, string eventType)
+        //Construtor privado existente (mantido para factories)
+        private EventContext(
+            TEvent data,
+            Guid aggregateId,
+            string eventType,
+            string aggregateType)
         {
             EventData = data;
             AggregateId = aggregateId;
             EventType = eventType ?? typeof(TEvent).Name;
+            AggregateType = aggregateType;
         }
 
-        /// <summary>
-        /// Factory method para criar EventContext com dados completos
-        /// </summary>
-        public static EventContext<TEvent, TAggregate> Create(
+        // Construtor público para deserialização pelo System.Text.Json
+        [JsonConstructor]
+        public EventContext(
+            TEvent eventData,
+            Guid messageId,
+            DateTime occurredAt,
+            Guid aggregateId,
+            string? userId,
+            bool isAuthenticated,
+            string? correlationId,
+            string? source,
+            string eventType,
+            string aggregateType,
+            int version,
+            IDictionary<string, object>? metadata)
+        {
+            EventData = eventData;
+            MessageId = messageId;
+            OccurredAt = occurredAt;
+            AggregateId = aggregateId;
+            UserId = userId;
+            IsAuthenticated = isAuthenticated;
+            CorrelationId = correlationId;
+            Source = source;
+            EventType = eventType;
+            AggregateType = aggregateType;
+            Version = version;
+            Metadata = metadata;
+        }
+
+        public static EventContext<TEvent> Create<TAggregate>(
             TEvent data,
             Guid aggregateId,
-            string eventType,
             string? userId = null,
             bool isAuthenticated = false,
             string? correlationId = null,
             string? source = null,
             int version = 1,
             IDictionary<string, object>? metadata = null)
+            where TAggregate : BaseAggregateRoot
         {
-            return new EventContext<TEvent, TAggregate>(data, aggregateId, eventType ?? typeof(TEvent).Name)
+            return new EventContext<TEvent>(
+                data,
+                aggregateId,
+                typeof(TEvent).Name,
+                typeof(TAggregate).Name)
             {
                 UserId = userId,
                 IsAuthenticated = isAuthenticated,
@@ -49,29 +87,20 @@
             };
         }
 
-        /// <summary>
-        /// Factory method simplificado para cenários básicos
-        /// </summary>
-        public static EventContext<TEvent, TAggregate> Create(
+        public static EventContext<TEvent> CreateBasic<TAggregate>(
             TEvent data,
-            string eventType,
-            Guid aggregateId,
-            string? userId = null,
-            bool isAuthenticated = false,
-            string? correlationId = null,
-            string? source = null)
+            Guid aggregateId)
+            where TAggregate : BaseAggregateRoot
         {
-            // Call the full Create method with explicit parameters
-            return Create(
+            return Create<TAggregate>(
                 data,
                 aggregateId,
-                eventType,
-                userId,
-                isAuthenticated,
-                correlationId,
-                source,
-                1,
-                null
+                userId: null,
+                isAuthenticated: false,
+                correlationId: null,
+                source: null,
+                version: 1,
+                metadata: null
             );
         }
     }

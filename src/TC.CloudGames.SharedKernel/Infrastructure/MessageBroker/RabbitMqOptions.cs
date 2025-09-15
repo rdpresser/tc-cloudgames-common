@@ -9,6 +9,9 @@
         public string Password { get; set; } = "guest";
 
         public string Exchange { get; set; } = "unknown.events";
+        public string ListenUserExchange { get; set; } = "user.events";
+        public string ListenGameExchange { get; set; } = "game.events";
+        public string ListenPaymentsExchange { get; set; } = "payment.events";
         public bool AutoProvision { get; set; } = true;
         public bool Durable { get; set; } = true;
         public bool UseQuorumQueues { get; set; } = false;

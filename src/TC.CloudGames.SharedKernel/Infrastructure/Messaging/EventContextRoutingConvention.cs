@@ -8,7 +8,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Messaging
     {
         public static string? DetermineRoutingKey(Type messageType, Envelope envelope)
         {
-            if (!messageType.IsGenericType || messageType.GetGenericTypeDefinition() != typeof(EventContext<,>))
+            if (!messageType.IsGenericType || messageType.GetGenericTypeDefinition() != typeof(EventContext<>))
                 return null;
 
             if (envelope.Message is null)
