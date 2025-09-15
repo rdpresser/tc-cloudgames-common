@@ -27,8 +27,14 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             ServiceBusSettings.TopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_TOPIC")
                                                 ?? ServiceBusSettings.TopicName;
 
-            ServiceBusSettings.SubscriptionName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_SUBSCRIPTION")
-                                                    ?? ServiceBusSettings.SubscriptionName;
+            ServiceBusSettings.UserSubscriptionName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_USER_SUBSCRIPTION")
+                                                    ?? ServiceBusSettings.UserSubscriptionName;
+
+            ServiceBusSettings.GameSubscriptionName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_GAME_SUBSCRIPTION")
+                                                    ?? ServiceBusSettings.GameSubscriptionName;
+
+            ServiceBusSettings.PaymentsSubscriptionName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_PAYMENTS_SUBSCRIPTION")
+                                                    ?? ServiceBusSettings.PaymentsSubscriptionName;
 
             ServiceBusSettings.AutoProvision = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTOPROVISION"), out var auto)
                                               ? auto
