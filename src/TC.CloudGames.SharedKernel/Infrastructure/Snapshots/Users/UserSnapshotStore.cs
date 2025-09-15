@@ -13,15 +13,15 @@
             _session = session ?? throw new ArgumentNullException(nameof(session));
         }
 
-        public async Task SaveAsync(UserSnapshot snapshot)
+        public async Task SaveAsync(UserSnapshot snapshot, CancellationToken cancellationToken = default)
         {
             _session.Store(snapshot);
-            await _session.SaveChangesAsync();
+            await _session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<UserSnapshot?> LoadAsync(Guid id)
+        public async Task<UserSnapshot?> LoadAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _session.LoadAsync<UserSnapshot>(id);
+            return await _session.LoadAsync<UserSnapshot>(id, cancellationToken).ConfigureAwait(false);
         }
     }
 }
