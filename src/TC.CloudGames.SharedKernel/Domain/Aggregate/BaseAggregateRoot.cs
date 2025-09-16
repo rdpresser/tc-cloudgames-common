@@ -7,8 +7,8 @@ namespace TC.CloudGames.SharedKernel.Domain.Aggregate
         private readonly List<BaseDomainEvent> _uncommittedEvents = new();
 
         public Guid Id { get; private set; }
-        public DateTime CreatedAt { get; private set; }
-        public DateTime? UpdatedAt { get; private set; }
+        public DateTimeOffset CreatedAt { get; private set; }
+        public DateTimeOffset? UpdatedAt { get; private set; }
         public bool IsActive { get; private set; }
 
         public IReadOnlyList<BaseDomainEvent> UncommittedEvents => _uncommittedEvents.AsReadOnly();
@@ -20,7 +20,7 @@ namespace TC.CloudGames.SharedKernel.Domain.Aggregate
             IsActive = true;
         }
 
-        protected void AddNewEvent(BaseDomainEvent @event)
+        public void AddNewEvent(BaseDomainEvent @event)
         {
             if (@event == null)
             {
@@ -34,12 +34,12 @@ namespace TC.CloudGames.SharedKernel.Domain.Aggregate
             Id = id;
         }
 
-        protected void SetCreatedAt(DateTime createdAt)
+        protected void SetCreatedAt(DateTimeOffset createdAt)
         {
             CreatedAt = createdAt;
         }
 
-        protected void SetUpdatedAt(DateTime? updatedAt)
+        protected void SetUpdatedAt(DateTimeOffset? updatedAt)
         {
             UpdatedAt = updatedAt;
         }
