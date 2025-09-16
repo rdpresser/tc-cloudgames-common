@@ -13,6 +13,9 @@ namespace TC.CloudGames.SharedKernel.Domain.Aggregate
 
         public IReadOnlyList<BaseDomainEvent> UncommittedEvents => _uncommittedEvents.AsReadOnly();
 
+        // Construtor protegido para ORMs / Marten
+        protected BaseAggregateRoot() { }
+
         protected BaseAggregateRoot(Guid id)
         {
             Id = id;
@@ -23,48 +26,23 @@ namespace TC.CloudGames.SharedKernel.Domain.Aggregate
         public void AddNewEvent(BaseDomainEvent @event)
         {
             if (@event == null)
-            {
                 throw new ArgumentNullException(nameof(@event), "Event cannot be null");
-            }
+
             _uncommittedEvents.Add(@event);
         }
 
-        protected void SetId(Guid id)
-        {
-            Id = id;
-        }
+        protected void SetId(Guid id) => Id = id;
 
-        protected void SetCreatedAt(DateTimeOffset createdAt)
-        {
-            CreatedAt = createdAt;
-        }
+        protected void SetCreatedAt(DateTimeOffset createdAt) => CreatedAt = createdAt;
 
-        protected void SetUpdatedAt(DateTimeOffset? updatedAt)
-        {
-            UpdatedAt = updatedAt;
-        }
+        protected void SetUpdatedAt(DateTimeOffset? updatedAt) => UpdatedAt = updatedAt;
 
-        protected void SetDeactivate()
-        {
-            IsActive = false;
-        }
+        protected void SetDeactivate() => IsActive = false;
 
-        protected void SetActivate()
-        {
-            IsActive = true;
-        }
+        protected void SetActivate() => IsActive = true;
 
-        protected void SetActive(bool isActive)
-        {
-            IsActive = isActive;
-        }
+        protected void SetActive(bool isActive) => IsActive = isActive;
 
-        /// <summary>
-        /// Marks all uncommitted events as committed (called after persistence)
-        /// </summary>
-        public void MarkEventsAsCommitted()
-        {
-            _uncommittedEvents.Clear();
-        }
+        public void MarkEventsAsCommitted() => _uncommittedEvents.Clear();
     }
 }

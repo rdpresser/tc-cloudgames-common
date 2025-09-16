@@ -36,25 +36,25 @@
                 Session.Events.Append(aggregateId, events);
         }
 
-        /// <summary>
-        /// Loads an aggregate by its ID. Throws an exception if not found.
-        /// </summary>
-        public async Task<TAggregate> LoadAsync(Guid aggregateId, CancellationToken cancellationToken = default)
-        {
-            var entity = await Session.LoadAsync<TAggregate>(aggregateId, cancellationToken).ConfigureAwait(false)
-                         ?? throw new InvalidOperationException($"Entity of type {typeof(TAggregate).Name} with ID {aggregateId} not found.");
-            return entity;
-        }
+        /////// <summary>
+        /////// Loads an aggregate by its ID. Throws an exception if not found.
+        /////// </summary>
+        ////public async Task<TAggregate> LoadAsync(Guid aggregateId, CancellationToken cancellationToken = default)
+        ////{
+        ////    var entity = await Session.LoadAsync<TAggregate>(aggregateId, cancellationToken).ConfigureAwait(false)
+        ////                 ?? throw new InvalidOperationException($"Entity of type {typeof(TAggregate).Name} with ID {aggregateId} not found.");
+        ////    return entity;
+        ////}
 
-        /// <summary>
-        /// Deletes an aggregate by its ID and persists the deletion.
-        /// </summary>
-        public async Task DeleteAsync(Guid aggregateId, CancellationToken cancellationToken = default)
-        {
-            var entity = await LoadAsync(aggregateId, cancellationToken).ConfigureAwait(false);
-            Session.Delete(entity);
-            await Session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        }
+        /////// <summary>
+        /////// Deletes an aggregate by its ID and persists the deletion.
+        /////// </summary>
+        ////public async Task DeleteAsync(Guid aggregateId, CancellationToken cancellationToken = default)
+        ////{
+        ////    var entity = await LoadAsync(aggregateId, cancellationToken).ConfigureAwait(false);
+        ////    Session.Delete(entity);
+        ////    await Session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        ////}
 
         /// <summary>
         /// Saves the aggregate's uncommitted events to the event stream.

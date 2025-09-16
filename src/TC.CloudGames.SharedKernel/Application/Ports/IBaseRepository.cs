@@ -7,11 +7,11 @@
     /// </summary>
     public interface IBaseRepository<TAggregate> where TAggregate : BaseAggregateRoot
     {
-        /////// <summary>
-        /////// Retrieves an aggregate by its unique identifier. 
-        /////// Returns null if the aggregate does not exist.
-        /////// </summary>
-        ////Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Retrieves an aggregate by its unique identifier. 
+        /// Returns null if the aggregate does not exist.
+        /// </summary>
+        Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Saves the aggregate state (including new domain events if any).
@@ -38,15 +38,15 @@
         /// </summary>
         Task<IEnumerable<TAggregate>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        /// <summary>
-        /// Permanently deletes the aggregate identified by its ID.
-        /// </summary>
-        Task DeleteAsync(Guid aggregateId, CancellationToken cancellationToken = default);
+        /////// <summary>
+        /////// Permanently deletes the aggregate identified by its ID.
+        /////// </summary>
+        ////Task DeleteAsync(Guid aggregateId, CancellationToken cancellationToken = default);
 
-        /// <summary>
-        /// Loads the aggregate by its ID, throwing if it does not exist.
-        /// Useful when the existence of the aggregate is guaranteed or required.
-        /// </summary>
-        Task<TAggregate> LoadAsync(Guid aggregateId, CancellationToken cancellationToken = default);
+        /////// <summary>
+        /////// Loads the aggregate by its ID, throwing if it does not exist.
+        /////// Useful when the existence of the aggregate is guaranteed or required.
+        /////// </summary>
+        ////Task<TAggregate> LoadAsync(Guid aggregateId, CancellationToken cancellationToken = default);
     }
 }
