@@ -1,12 +1,16 @@
-﻿using TC.CloudGames.SharedKernel.Domain.Events;
+﻿using Marten.Schema;
+using System.Text.Json.Serialization;
+using TC.CloudGames.SharedKernel.Domain.Events;
 
 namespace TC.CloudGames.SharedKernel.Domain.Aggregate
 {
     public abstract class BaseAggregateRoot
     {
+        [JsonIgnore]
         private readonly List<BaseDomainEvent> _uncommittedEvents = new();
 
-        public Guid Id { get; private set; }
+        [Identity]
+        public Guid Id { get; protected set; }
         public DateTimeOffset CreatedAt { get; private set; }
         public DateTimeOffset? UpdatedAt { get; private set; }
         public bool IsActive { get; private set; }
@@ -19,7 +23,7 @@ namespace TC.CloudGames.SharedKernel.Domain.Aggregate
         protected BaseAggregateRoot(Guid id)
         {
             Id = id;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTimeOffset.UtcNow;
             IsActive = true;
         }
 
