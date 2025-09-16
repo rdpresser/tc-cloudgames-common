@@ -29,9 +29,9 @@ namespace TC.CloudGames.SharedKernel.Application.Handlers
 
         #region Optional Hooks for Derived Command Handlers
 
-        protected abstract Task<Result<TAggregate>> MapCommandToAggregateAsync(TCommand command);
-        protected virtual Task<Result> ValidateAggregateAsync(TAggregate aggregate) => Task.FromResult(Result.Success());
-        protected virtual Task PublishIntegrationEventsAsync(TAggregate aggregate) => Task.CompletedTask;
+        protected abstract Task<Result<TAggregate>> MapCommandToAggregateAsync(TCommand command, CancellationToken ct = default);
+        protected virtual Task<Result> ValidateAggregateAsync(TAggregate aggregate, CancellationToken ct = default) => Task.FromResult(Result.Success());
+        protected virtual Task PublishIntegrationEventsAsync(TAggregate aggregate, CancellationToken ct = default) => Task.CompletedTask;
 
         #endregion
     }

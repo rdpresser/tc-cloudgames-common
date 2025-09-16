@@ -3,7 +3,7 @@
     public abstract record BaseIntegrationEvent(
         Guid EventId,
         Guid AggregateId,
-        DateTime OccurredOn,
+        DateTimeOffset OccurredOn,
         string EventName
     );
 }

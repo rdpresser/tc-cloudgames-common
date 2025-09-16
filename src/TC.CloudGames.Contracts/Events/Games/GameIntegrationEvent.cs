@@ -64,7 +64,7 @@
         decimal? RatingAverage,
         string? OfficialLink,
         string? GameStatus,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), AggregateId, OccurredOn, nameof(GameCreatedIntegrationEvent));
 
     /// <summary>
@@ -80,7 +80,7 @@
         string Name,
         string? Description,
         string? OfficialLink,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameBasicInfoUpdatedIntegrationEvent));
 
     /// <summary>
@@ -95,7 +95,7 @@
         Guid Id,
         decimal NewPriceAmount,
         decimal? OldPriceAmount,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GamePriceUpdatedIntegrationEvent));
 
     /// <summary>
@@ -111,7 +111,7 @@
         string Name,
         string NewStatus,
         string? OldStatus,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameStatusUpdatedIntegrationEvent));
 
     /// <summary>
@@ -127,7 +127,7 @@
         string Name,
         decimal? NewRatingAverage,
         decimal? OldRatingAverage,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameRatingUpdatedIntegrationEvent));
 
     /// <summary>
@@ -148,7 +148,7 @@
         string DistributionFormat,
         string? AvailableLanguages,
         bool SupportsDlcs,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameDetailsUpdatedIntegrationEvent));
 
     /// <summary>
@@ -162,7 +162,7 @@
     public record GameActivatedIntegrationEvent(
         Guid Id,
         string Name,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameActivatedIntegrationEvent));
 
     /// <summary>
@@ -176,6 +176,6 @@
     public record GameDeactivatedIntegrationEvent(
         Guid Id,
         string Name,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameDeactivatedIntegrationEvent));
 }

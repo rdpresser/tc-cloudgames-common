@@ -47,7 +47,7 @@
         string Email,
         string Username,
         string Role,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), AggregateId, OccurredOn, nameof(UserCreatedIntegrationEvent));
 
     /// <summary>
@@ -63,7 +63,7 @@
         string Name,
         string Email,
         string Username,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(UserUpdatedIntegrationEvent));
 
     /// <summary>
@@ -77,7 +77,7 @@
     public record UserRoleChangedIntegrationEvent(
         Guid Id,
         string NewRole,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(UserRoleChangedIntegrationEvent));
 
     /// <summary>
@@ -90,7 +90,7 @@
     /// </remarks>
     public record UserActivatedIntegrationEvent(
         Guid Id,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(UserActivatedIntegrationEvent));
 
     /// <summary>
@@ -103,7 +103,7 @@
     /// </remarks>
     public record UserDeactivatedIntegrationEvent(
         Guid Id,
-        DateTime OccurredOn
+        DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(UserDeactivatedIntegrationEvent));
 
 }

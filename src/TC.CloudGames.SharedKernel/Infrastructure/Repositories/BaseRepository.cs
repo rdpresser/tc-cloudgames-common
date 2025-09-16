@@ -15,7 +15,7 @@
         /// <summary>
         /// Retrieves an aggregate by its ID. Returns null if not found.
         /// </summary>
-        private async Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default)
+        public async Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default)
             => await Session.Events.AggregateStreamAsync<TAggregate>(aggregateId, token: cancellationToken).ConfigureAwait(false);
 
         /// <summary>
