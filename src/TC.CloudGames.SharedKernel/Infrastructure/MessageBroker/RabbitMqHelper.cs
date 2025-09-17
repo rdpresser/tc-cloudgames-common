@@ -29,7 +29,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             RabbitMqSettings.Exchange = GetEnvOrDefault("RABBITMQ_EXCHANGE", RabbitMqSettings.Exchange);
             RabbitMqSettings.ListenUserExchange = GetEnvOrDefault("RABBITMQ_LISTEN_USER_EXCHANGE", RabbitMqSettings.ListenUserExchange);
             RabbitMqSettings.ListenGameExchange = GetEnvOrDefault("RABBITMQ_LISTEN_GAME_EXCHANGE", RabbitMqSettings.ListenGameExchange);
-            RabbitMqSettings.ListenPaymentsExchange = GetEnvOrDefault("RABBITMQ_LISTEN_PAYMENTS_EXCHANGE", RabbitMqSettings.ListenPaymentsExchange);
+            RabbitMqSettings.ListenPaymentExchange = GetEnvOrDefault("RABBITMQ_LISTEN_PAYMENT_EXCHANGE", RabbitMqSettings.ListenPaymentExchange);
 
             // --------------------------------------------------
             // Override boolean flags (supports: true/false/1/0/yes/no)

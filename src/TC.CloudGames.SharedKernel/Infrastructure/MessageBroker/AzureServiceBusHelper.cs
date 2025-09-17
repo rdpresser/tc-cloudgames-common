@@ -27,32 +27,32 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             ServiceBusSettings.TopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_TOPIC")
                                                 ?? ServiceBusSettings.TopicName;
 
-            ServiceBusSettings.UserSubscriptionName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_USER_SUBSCRIPTION")
-                                                    ?? ServiceBusSettings.UserSubscriptionName;
+            ServiceBusSettings.UsersTopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_USERS_TOPIC")
+                                                    ?? ServiceBusSettings.UsersTopicName;
 
-            ServiceBusSettings.GameSubscriptionName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_GAME_SUBSCRIPTION")
-                                                    ?? ServiceBusSettings.GameSubscriptionName;
+            ServiceBusSettings.GamesTopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_GAMES_TOPIC")
+                                                    ?? ServiceBusSettings.GamesTopicName;
 
-            ServiceBusSettings.PaymentsSubscriptionName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_PAYMENTS_SUBSCRIPTION")
-                                                    ?? ServiceBusSettings.PaymentsSubscriptionName;
+            ServiceBusSettings.PaymentsTopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_PAYMENTS_TOPIC")
+                                                    ?? ServiceBusSettings.PaymentsTopicName;
 
-            ServiceBusSettings.AutoProvision = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTOPROVISION"), out var auto)
+            ServiceBusSettings.AutoProvision = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTO_PROVISION"), out var auto)
                                               ? auto
                                               : ServiceBusSettings.AutoProvision;
 
-            ServiceBusSettings.MaxDeliveryCount = int.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_MAXDELIVERY"), out var max)
+            ServiceBusSettings.MaxDeliveryCount = int.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_MAX_DELIVERY_COUNT"), out var max)
                                                 ? max
                                                 : ServiceBusSettings.MaxDeliveryCount;
 
-            ServiceBusSettings.EnableDeadLettering = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_ENABLEDLQ"), out var dlq)
+            ServiceBusSettings.EnableDeadLettering = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_ENABLE_DEAD_LETTERING"), out var dlq)
                                                     ? dlq
                                                     : ServiceBusSettings.EnableDeadLettering;
 
-            ServiceBusSettings.AutoPurgeOnStartup = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTOPURGE"), out var purge)
+            ServiceBusSettings.AutoPurgeOnStartup = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTO_PURGE_ON_STARTUP"), out var purge)
                                                     ? purge
                                                     : ServiceBusSettings.AutoPurgeOnStartup;
 
-            ServiceBusSettings.UseControlQueues = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_USECONTROLQUEUES"), out var control)
+            ServiceBusSettings.UseControlQueues = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_USE_CONTROL_QUEUES"), out var control)
                                                     ? control
                                                     : ServiceBusSettings.UseControlQueues;
         }
