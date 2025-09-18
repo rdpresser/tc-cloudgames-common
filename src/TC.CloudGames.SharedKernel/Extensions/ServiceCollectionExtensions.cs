@@ -139,7 +139,7 @@
             try
             {
                 using var loggerFactory = LoggerFactory.Create(builder =>
-                    builder.AddConsole().SetMinimumLevel(LogLevel.Information));
+                    builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
                 return loggerFactory.CreateLogger("EnvironmentConfiguration");
             }
             catch

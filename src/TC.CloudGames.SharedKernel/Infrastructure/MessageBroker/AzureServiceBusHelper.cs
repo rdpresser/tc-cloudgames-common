@@ -24,7 +24,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             ServiceBusSettings.ConnectionString = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_CONNECTIONSTRING")
                                                     ?? ServiceBusSettings.ConnectionString;
 
-            ServiceBusSettings.TopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_TOPIC")
+            ServiceBusSettings.TopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_TOPIC_NAME")
                                                 ?? ServiceBusSettings.TopicName;
 
             ServiceBusSettings.UsersTopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_USERS_TOPIC")
