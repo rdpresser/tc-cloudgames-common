@@ -2,9 +2,9 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.Result.AspNetCore" Version="10.1.0" />
-    <PackageReference Include="Marten" Version="8.10.0" />
-    <PackageReference Include="WolverineFx" Version="4.11.0" />
-    <PackageReference Include="WolverineFx.Marten" Version="4.11.0" />
+    <PackageReference Include="Marten" Version="8.11.0" />
+    <PackageReference Include="WolverineFx" Version="4.12.1" />
+    <PackageReference Include="WolverineFx.Marten" Version="4.12.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.9" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.14.0" />
     <PackageReference Include="ZiggyCreatures.FusionCache" Version="2.4.0" />
