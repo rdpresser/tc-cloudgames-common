@@ -2,11 +2,6 @@
 {
     public static class MessageNameHelper
     {
-        public static string DefaultFlattenedMessageName2(Type type)
-        {
-            return type.Name.Replace("`1", string.Empty);
-        }
-
         public static string DefaultFlattenedMessageName(Type messageType)
         {
             if (!messageType.IsGenericType) return messageType.Name;
