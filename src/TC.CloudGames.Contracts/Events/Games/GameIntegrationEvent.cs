@@ -178,4 +178,31 @@
         string Name,
         DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameDeactivatedIntegrationEvent));
+
+    /// <summary>
+    /// Integration event triggered when a game is purchased.
+    /// Signals to other services that a user has successfully acquired a new game.
+    /// </summary>
+    /// <remarks>
+    /// Inherits from <see cref="BaseIntegrationEvent"/>.
+    /// Naming convention: GamePurchasedIntegrationEvent.
+    /// </remarks>
+    public record GamePurchasedIntegrationEvent(
+        Guid UserId,
+        Guid GameId,
+        Guid PaymentId,
+        string GameName,
+        DateTime PurchaseDate,
+        DateTimeOffset OccurredOn
+    ) : BaseIntegrationEvent(
+            Guid.NewGuid(),                  // EventId
+            UserId,                          // AggregateId (principal = User)
+            OccurredOn,           // OccurredOn
+            nameof(GamePurchasedIntegrationEvent),
+            new Dictionary<string, Guid>     // RelatedIds
+            {
+                { "GameId", GameId },
+                { "PaymentId", PaymentId }
+            }
+        );
 }

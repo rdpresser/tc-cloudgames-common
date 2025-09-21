@@ -80,6 +80,26 @@
         }
 
         /// <summary>
+        /// Builds a simple Result (non-generic) containing validation errors, ready to return from handler.
+        /// </summary>
+        protected Result BuildSimpleValidationErrorResult()
+        {
+            if (!ValidationContext.ValidationFailures.Any())
+                return Result.Success(default!);
+
+            var errors = ValidationContext.ValidationFailures
+                .Select(f => new ValidationError
+                {
+                    Identifier = f.PropertyName,
+                    ErrorCode = f.ErrorCode,
+                    ErrorMessage = f.ErrorMessage,
+                    Severity = (ValidationSeverity)f.Severity
+                }).ToList();
+
+            return Result.Invalid(errors);
+        }
+
+        /// <summary>
         /// Builds a NotFound result based on validation failures.
         /// </summary>
         protected Result<TResponse> BuildNotFoundResult()

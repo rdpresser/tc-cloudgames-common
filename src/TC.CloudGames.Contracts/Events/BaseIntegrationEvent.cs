@@ -4,6 +4,7 @@
         Guid EventId,
         Guid AggregateId,
         DateTimeOffset OccurredOn,
-        string EventName
+        string EventName,
+        IDictionary<string, Guid>? RelatedIds = null
     );
 }
