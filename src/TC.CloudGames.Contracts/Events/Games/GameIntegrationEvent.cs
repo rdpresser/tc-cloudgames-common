@@ -192,6 +192,7 @@
         Guid GameId,
         Guid PaymentId,
         string GameName,
+        decimal Amount,
         DateTime PurchaseDate,
         DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(
