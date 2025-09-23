@@ -1,9 +1,4 @@
-﻿using TC.CloudGames.Contracts.Events.Users;
-using TC.CloudGames.SharedKernel.Infrastructure.Messaging;
-using Wolverine;
-using static TC.CloudGames.Messaging.Extensions.MessageNameHelper;
-
-namespace TC.CloudGames.Messaging.Extensions
+﻿namespace TC.CloudGames.Messaging.Extensions
 {
     public static class UserEventsRegistrationExtensions
     {

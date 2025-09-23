@@ -1,7 +1,4 @@
-﻿using TC.CloudGames.Contracts.Events.Games;
-using TC.CloudGames.SharedKernel.Infrastructure.Messaging;
-using Wolverine;
-using static TC.CloudGames.Messaging.Extensions.MessageNameHelper;
+﻿using TC.CloudGames.Contracts.Events.Payments;
 
 namespace TC.CloudGames.Messaging.Extensions
 {
@@ -37,6 +34,16 @@ namespace TC.CloudGames.Messaging.Extensions
                 typeof(EventContext<GameDeactivatedIntegrationEvent>),
                 DefaultFlattenedMessageName(typeof(EventContext<GameDeactivatedIntegrationEvent>))
             );
+            opts.RegisterMessageType(
+                typeof(EventContext<GamePurchasedIntegrationEvent>),
+                DefaultFlattenedMessageName(typeof(EventContext<GamePurchasedIntegrationEvent>))
+            );
+            ////opts.RegisterMessageType(
+            ////    typeof(EventContext<ChargePaymentRequest>),
+            ////    DefaultFlattenedMessageName(typeof(EventContext<ChargePaymentRequest>))
+            ////);
+            opts.RegisterMessageType(typeof(ChargePaymentRequest), nameof(ChargePaymentRequest));
+            opts.RegisterMessageType(typeof(ChargePaymentResponse), nameof(ChargePaymentResponse));
         }
     }
 }
