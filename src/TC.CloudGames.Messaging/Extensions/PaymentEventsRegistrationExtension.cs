@@ -10,8 +10,8 @@ namespace TC.CloudGames.Messaging.Extensions
             ////    typeof(EventContext<ChargePaymentRequest>),
             ////    DefaultFlattenedMessageName(typeof(EventContext<ChargePaymentRequest>))
             ////);
-            opts.RegisterMessageType(typeof(ChargePaymentRequest), nameof(ChargePaymentRequest));
-            opts.RegisterMessageType(typeof(ChargePaymentResponse), nameof(ChargePaymentResponse));
+            opts.RegisterMessageType(typeof(ChargePaymentRequest), DefaultFlattenedMessageName(typeof(ChargePaymentRequest)));
+            opts.RegisterMessageType(typeof(ChargePaymentResponse), DefaultFlattenedMessageName(typeof(ChargePaymentResponse)));
         }
     }
 }

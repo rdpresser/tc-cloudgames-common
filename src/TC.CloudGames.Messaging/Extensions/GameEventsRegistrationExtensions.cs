@@ -1,11 +1,13 @@
-﻿using TC.CloudGames.Contracts.Events.Payments;
-
-namespace TC.CloudGames.Messaging.Extensions
+﻿namespace TC.CloudGames.Messaging.Extensions
 {
     public static class GameEventsRegistrationExtensions
     {
         public static void RegisterGameEvents(this WolverineOptions opts)
         {
+            opts.RegisterMessageType(
+                typeof(EventContext<GameCreatedIntegrationEvent>),
+                DefaultFlattenedMessageName(typeof(EventContext<GameCreatedIntegrationEvent>))
+            );
             opts.RegisterMessageType(
                 typeof(EventContext<GameBasicInfoUpdatedIntegrationEvent>),
                 DefaultFlattenedMessageName(typeof(EventContext<GameBasicInfoUpdatedIntegrationEvent>))
@@ -38,12 +40,6 @@ namespace TC.CloudGames.Messaging.Extensions
                 typeof(EventContext<GamePurchasedIntegrationEvent>),
                 DefaultFlattenedMessageName(typeof(EventContext<GamePurchasedIntegrationEvent>))
             );
-            ////opts.RegisterMessageType(
-            ////    typeof(EventContext<ChargePaymentRequest>),
-            ////    DefaultFlattenedMessageName(typeof(EventContext<ChargePaymentRequest>))
-            ////);
-            opts.RegisterMessageType(typeof(ChargePaymentRequest), nameof(ChargePaymentRequest));
-            opts.RegisterMessageType(typeof(ChargePaymentResponse), nameof(ChargePaymentResponse));
         }
     }
 }
