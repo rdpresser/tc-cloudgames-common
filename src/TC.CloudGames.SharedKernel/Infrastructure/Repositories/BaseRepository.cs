@@ -16,6 +16,9 @@
         /// Retrieves an aggregate by its ID using snapshot (no replay of events).
         /// Returns null if not found.
         /// </summary>
+        ////public async Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default)
+        ////    => await Session.Events.AggregateStreamAsync<TAggregate>(aggregateId, token: cancellationToken).ConfigureAwait(false);
+
         public async Task<TAggregate?> GetByIdAsync(Guid aggregateId, CancellationToken cancellationToken = default)
             => await Session.LoadAsync<TAggregate>(aggregateId, cancellationToken).ConfigureAwait(false);
 
