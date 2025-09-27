@@ -43,7 +43,7 @@
     public record GameCreatedIntegrationEvent(
         Guid AggregateId,
         string Name,
-        DateTime ReleaseDate,
+        DateTimeOffset ReleaseDate,
         string AgeRating,
         string? Description,
         string Developer,
@@ -188,20 +188,22 @@
     /// Naming convention: GamePurchasedIntegrationEvent.
     /// </remarks>
     public record GamePurchasedIntegrationEvent(
+        Guid AggregateId,
         Guid UserId,
         Guid GameId,
         Guid PaymentId,
         string GameName,
         decimal Amount,
-        DateTime PurchaseDate,
+        DateTimeOffset PurchaseDate,
         DateTimeOffset OccurredOn
     ) : BaseIntegrationEvent(
-            Guid.NewGuid(),                  // EventId
-            UserId,                          // AggregateId (principal = User)
+            Guid.NewGuid(),       // EventId
+            AggregateId,          // AggregateId (principal = UserGameLibraryAggregate)
             OccurredOn,           // OccurredOn
             nameof(GamePurchasedIntegrationEvent),
             new Dictionary<string, Guid>     // RelatedIds
             {
+                { "UserId", UserId },
                 { "GameId", GameId },
                 { "PaymentId", PaymentId }
             }
