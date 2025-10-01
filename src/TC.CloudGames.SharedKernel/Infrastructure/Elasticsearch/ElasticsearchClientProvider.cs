@@ -40,7 +40,7 @@ public sealed class ElasticsearchClientProvider : IElasticsearchClientProvider
         // Always apply environment variables overrides (highest priority)
         ApplyEnvironmentVariables(_options);
 
-        IndexName = _options.IndexPrefix;
+        IndexName = _options.IndexName;
         MaxSearchSize = _options.MaxSearchSize;
 
         _client = new Lazy<ElasticsearchClient>(() => CreateElasticsearchClient(_options));
