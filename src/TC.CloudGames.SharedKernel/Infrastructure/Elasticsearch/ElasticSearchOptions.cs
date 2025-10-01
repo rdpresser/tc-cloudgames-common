@@ -49,7 +49,7 @@ public class ElasticSearchOptions
     /// <summary>
     /// Index prefix for multi-tenant scenarios.
     /// </summary>
-    public string IndexPrefix { get; set; } = "search-xn8c";
+    public string IndexPrefix { get; set; } = string.Empty;
 
     /// <summary>
     /// Complete index name.
