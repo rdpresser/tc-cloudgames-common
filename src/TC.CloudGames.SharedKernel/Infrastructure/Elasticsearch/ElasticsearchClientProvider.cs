@@ -19,7 +19,6 @@ public sealed class ElasticsearchClientProvider : IElasticsearchClientProvider
     public string IndexName { get; private set; }
     public int MaxSearchSize { get; private set; }
 
-
     public ElasticsearchClientProvider(IOptions<ElasticSearchOptions> options)
     {
         // Start with options from IOptions<T> (appsettings.json)
