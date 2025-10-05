@@ -40,6 +40,10 @@
                 typeof(EventContext<GamePurchasedIntegrationEvent>),
                 DefaultFlattenedMessageName(typeof(EventContext<GamePurchasedIntegrationEvent>))
             );
+            opts.RegisterMessageType(
+                typeof(GamePurchasePaymentApprovedFunctionEvent),
+                nameof(GamePurchasePaymentApprovedFunctionEvent)
+            );
         }
     }
 }

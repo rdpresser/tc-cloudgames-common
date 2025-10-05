@@ -177,7 +177,11 @@
         Guid Id,
         string Name,
         DateTimeOffset OccurredOn
-    ) : BaseIntegrationEvent(Guid.NewGuid(), Id, OccurredOn, nameof(GameDeactivatedIntegrationEvent));
+    ) : BaseIntegrationEvent(
+            Guid.NewGuid(), 
+            Id,
+            OccurredOn == default ? DateTimeOffset.UtcNow : OccurredOn, 
+            nameof(GameDeactivatedIntegrationEvent));
 
     /// <summary>
     /// Integration event triggered when a game is purchased.
@@ -199,7 +203,7 @@
     ) : BaseIntegrationEvent(
             Guid.NewGuid(),       // EventId
             AggregateId,          // AggregateId (principal = UserGameLibraryAggregate)
-            OccurredOn,           // OccurredOn
+            OccurredOn == default ? DateTimeOffset.UtcNow : OccurredOn,           // OccurredOn
             nameof(GamePurchasedIntegrationEvent),
             new Dictionary<string, Guid>     // RelatedIds
             {
@@ -208,4 +212,13 @@
                 { "PaymentId", PaymentId }
             }
         );
+
+    public record GamePurchasePaymentApprovedFunctionEvent(
+        Guid UserId,
+        string Name,
+        string Email,
+        string GameName,
+        decimal Amount,
+        DateTimeOffset OccurredOn
+    );
 }
