@@ -164,15 +164,7 @@ services.AddGameEventHandlers()
 <PackageReference Include="TC.CloudGames.SharedKernel" Version="1.0.0" />
 ```
 
-2. **Configure services in your microservice**
-```csharp
-// Program.cs
-builder.Services.AddSharedKernel(builder.Configuration)
-                .AddMessaging()
-                .AddContracts();
-```
-
-3. **Use in your domain models**
+2. **Use in your domain models**
 ```csharp
 public class YourAggregate : BaseAggregateRoot
 {
@@ -189,16 +181,6 @@ public class YourAggregate : BaseAggregateRoot
 4. **Cross-Service**: Other microservices consume integration events
 5. **Business Reaction**: Consuming services react with their own domain logic
 
-## 🧪 Testing
-
-### Unit Tests
-```bash
-# Run all shared library tests
-dotnet test src/TC.CloudGames.SharedKernel.Tests/
-dotnet test src/TC.CloudGames.Contracts.Tests/
-dotnet test src/TC.CloudGames.Messaging.Tests/
-```
-
 ## 📊 Monitoring & Observability
 
 ### Built-in Features
@@ -209,9 +191,6 @@ dotnet test src/TC.CloudGames.Messaging.Tests/
 - **Distributed Tracing**: OpenTelemetry integration for cross-service calls
 
 ## 🚀 Deployment
-
-### NuGet Packages
-The common libraries are distributed as NuGet packages for easy consumption across microservices.
 
 ### Versioning Strategy
 - **Semantic Versioning**: Breaking changes increment major version
