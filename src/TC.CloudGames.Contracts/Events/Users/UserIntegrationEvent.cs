@@ -36,6 +36,7 @@
     /// - EventId: unique identifier for this event instance
     /// - AggregateId: identifier of the originating aggregate
     /// - OccurredOn: timestamp when the event occurred
+    /// 
     /// - EventName: event name for logging and auditing
     /// 
     /// Naming convention: UserCreatedIntegrationEvent
