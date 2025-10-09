@@ -18,6 +18,9 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             ServiceBusSettings = configuration.GetSection(ServiceBusSectionName).Get<AzureServiceBusOptions>()
                                 ?? new AzureServiceBusOptions();
 
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? configuration["ASPNETCORE_ENVIRONMENT"] ?? "Development";
+            var isDevelopment = string.Equals(environment, "Development", StringComparison.OrdinalIgnoreCase);
+
             // --------------------------------------------------
             // Override properties with environment variables if present
             // --------------------------------------------------
@@ -36,9 +39,9 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             ServiceBusSettings.PaymentsTopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_PAYMENTS_TOPIC")
                                                     ?? ServiceBusSettings.PaymentsTopicName;
 
-            ServiceBusSettings.AutoProvision = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTO_PROVISION"), out var auto)
+            ServiceBusSettings.AutoProvision = (bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTO_PROVISION"), out var auto)
                                               ? auto
-                                              : ServiceBusSettings.AutoProvision;
+                                              : ServiceBusSettings.AutoProvision) && isDevelopment;
 
             ServiceBusSettings.MaxDeliveryCount = int.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_MAX_DELIVERY_COUNT"), out var max)
                                                 ? max
