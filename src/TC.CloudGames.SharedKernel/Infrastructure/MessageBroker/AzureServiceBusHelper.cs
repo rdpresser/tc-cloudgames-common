@@ -36,9 +36,9 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.MessageBroker
             ServiceBusSettings.PaymentsTopicName = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_PAYMENTS_TOPIC")
                                                     ?? ServiceBusSettings.PaymentsTopicName;
 
-            ServiceBusSettings.AutoProvision = bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTO_PROVISION"), out var auto)
+            ServiceBusSettings.AutoProvision = (bool.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_AUTO_PROVISION"), out var auto)
                                               ? auto
-                                              : ServiceBusSettings.AutoProvision;
+                                              : ServiceBusSettings.AutoProvision);
 
             ServiceBusSettings.MaxDeliveryCount = int.TryParse(Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_MAX_DELIVERY_COUNT"), out var max)
                                                 ? max
