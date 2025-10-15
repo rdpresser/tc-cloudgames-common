@@ -3,6 +3,7 @@
     public sealed class AzureServiceBusOptions
     {
         public string ConnectionString { get; set; } = string.Empty;
+        public string Namespace { get; set; } = string.Empty;
         public string TopicName { get; set; } = "unknown-events";
         public string GamesTopicName { get; set; } = "game.events";
         public string UsersTopicName { get; set; } = "user.events";
