@@ -27,12 +27,9 @@ public static class WolverineAzureExtensions
         AzureServiceBusOptions sb,
         IWebHostEnvironment env)
     {
-        var isDev = env.IsDevelopment() ||
-                    env.EnvironmentName.Equals("development", StringComparison.OrdinalIgnoreCase);
-
         var identifier = env.ApplicationName ?? "WolverineApp";
 
-        if (isDev && !string.IsNullOrWhiteSpace(sb.ConnectionString))
+        if (env.IsDevelopment() && !string.IsNullOrWhiteSpace(sb.ConnectionString))
         {
             return opts.UseAzureServiceBus(sb.ConnectionString, cfg =>
             {
