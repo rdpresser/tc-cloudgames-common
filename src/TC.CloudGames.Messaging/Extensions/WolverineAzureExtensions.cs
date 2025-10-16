@@ -20,7 +20,7 @@ public static class WolverineAzureExtensions
     }
 
     // -------------------------------
-    // 🔒 Método privado centralizado
+    // 🔒 Centralized private method
     // -------------------------------
     private static AzureServiceBusConfiguration ConfigureInternal(
         WolverineOptions opts,
