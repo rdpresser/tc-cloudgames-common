@@ -1,6 +1,7 @@
 ﻿using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace TC.CloudGames.SharedKernel.Infrastructure.Elasticsearch;
 
@@ -15,9 +16,6 @@ public sealed class ElasticsearchClientProvider : IElasticsearchClientProvider
 
     private readonly ElasticSearchOptions _options;
     private readonly Lazy<ElasticsearchClient> _client;
-
-    public string IndexName { get; private set; }
-    public int MaxSearchSize { get; private set; }
 
     public ElasticsearchClientProvider(IOptions<ElasticSearchOptions> options)
     {
@@ -39,9 +37,6 @@ public sealed class ElasticsearchClientProvider : IElasticsearchClientProvider
         // Always apply environment variables overrides (highest priority)
         ApplyEnvironmentVariables(_options);
 
-        IndexName = _options.IndexName;
-        MaxSearchSize = _options.MaxSearchSize;
-
         _client = new Lazy<ElasticsearchClient>(() => CreateElasticsearchClient(_options));
     }
 
@@ -49,6 +44,16 @@ public sealed class ElasticsearchClientProvider : IElasticsearchClientProvider
     /// Gets a configured Elasticsearch client based on the options.
     /// </summary>
     public ElasticsearchClient Client => _client.Value;
+
+    /// <summary>
+    /// Gets the index name for operations.
+    /// </summary>
+    public string IndexName => _options.IndexName;
+
+    /// <summary>
+    /// Gets the maximum search size allowed.
+    /// </summary>
+    public int MaxSearchSize => _options.MaxSearchSize;
 
     /// <summary>
     /// Applies environment variable overrides to ElasticSearchOptions.

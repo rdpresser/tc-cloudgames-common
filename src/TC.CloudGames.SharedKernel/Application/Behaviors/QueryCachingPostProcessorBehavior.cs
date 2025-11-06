@@ -34,12 +34,14 @@ namespace TC.CloudGames.SharedKernel.Application.Behaviors
 
             if (!context.HasValidationFailures)
             {
-                await _cacheService.SetAsync(
+                await _cacheService.SetAsync
+                (
                     GenerateCacheKey(context),
                     context.Response,
                     context.Request!.Duration,
                     context.Request.DistributedCacheDuration,
-                    ct).ConfigureAwait(false);
+                    ct
+                ).ConfigureAwait(false);
 
                 var responseValues = new
                 {
