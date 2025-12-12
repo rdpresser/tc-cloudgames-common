@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<PackageReference Include="WolverineFx" Version="4.12.3" />
-		<PackageReference Include="WolverineFx.AzureServiceBus" Version="4.12.3" />
-		<PackageReference Include="WolverineFx.Marten" Version="4.12.3" />
-		<PackageReference Include="WolverineFx.RabbitMQ" Version="4.12.3" />
+		<PackageReference Include="WolverineFx" Version="5.6.0" />
+		<PackageReference Include="WolverineFx.AzureServiceBus" Version="5.6.0" />
+		<PackageReference Include="WolverineFx.Marten" Version="5.6.0" />
+		<PackageReference Include="WolverineFx.RabbitMQ" Version="5.6.0" />
 	</ItemGroup>
 
 	<ItemGroup>
