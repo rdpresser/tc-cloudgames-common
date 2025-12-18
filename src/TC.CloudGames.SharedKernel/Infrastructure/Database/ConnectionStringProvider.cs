@@ -48,11 +48,15 @@
                 : _dbSettings.MinPoolSize;
 
             // Constrain pooling values to avoid negative or zero settings that would break connections
+            // Always clamp to safe absolute bounds, regardless of misconfigured app settings
             if (maxPoolSize < 1)
-                maxPoolSize = _dbSettings.MaxPoolSize;
+                maxPoolSize = 1;
 
-            if (minPoolSize < 0 || minPoolSize > maxPoolSize)
-                minPoolSize = _dbSettings.MinPoolSize;
+            if (minPoolSize < 0)
+                minPoolSize = 0;
+
+            if (minPoolSize > maxPoolSize)
+                minPoolSize = maxPoolSize;
 
             return $"Host={host};Port={port};Database={database};Username={username};Password={password};SearchPath={schema};Timeout={connectionTimeout};CommandTimeout={connectionTimeout};Pooling=true;Minimum Pool Size={minPoolSize};Maximum Pool Size={maxPoolSize}";
         }
