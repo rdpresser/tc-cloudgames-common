@@ -24,7 +24,7 @@ public sealed class FakeElasticsearchClientProvider : IElasticsearchClientProvid
 #pragma warning disable S1075 // URIs should not be hardcoded - This is intentional for fake client
             var fakeUri = new Uri("http://localhost:9200"); // Local fallback URI for fake client
 #pragma warning restore S1075
-            return new ElasticsearchClient(new ElasticsearchClientSettings(fakeUri));
+            return new ElasticsearchClient(fakeUri);
         });
     }
 
