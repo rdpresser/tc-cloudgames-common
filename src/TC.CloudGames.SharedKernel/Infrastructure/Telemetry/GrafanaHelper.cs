@@ -14,7 +14,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Telemetry
 
         public GrafanaHelper(IConfiguration configuration)
         {
-            // Bind section "Grafana" ? GrafanaOptions
+            // Bind section "Grafana" to GrafanaOptions
             GrafanaSettings = configuration.GetSection(GrafanaSectionName).Get<GrafanaOptions>()
                                ?? new GrafanaOptions();
 
@@ -29,15 +29,15 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Telemetry
             // ============================================
             GrafanaSettings.Otlp.Endpoint = GetEnvOrDefault(
                 "OTEL_EXPORTER_OTLP_ENDPOINT",
-                GrafanaSettings.Otlp.Endpoint) ?? GrafanaSettings.Otlp.Endpoint;
+                GrafanaSettings.Otlp.Endpoint);
 
             GrafanaSettings.Otlp.Protocol = GetEnvOrDefault(
                 "OTEL_EXPORTER_OTLP_PROTOCOL",
-                GrafanaSettings.Otlp.Protocol) ?? GrafanaSettings.Otlp.Protocol;
+                GrafanaSettings.Otlp.Protocol);
 
             GrafanaSettings.Otlp.Headers = GetEnvOrDefault(
                 "OTEL_EXPORTER_OTLP_HEADERS",
-                GrafanaSettings.Otlp.Headers);
+                GrafanaSettings.Otlp.Headers ?? string.Empty);
 
             GrafanaSettings.Otlp.TimeoutSeconds = GetEnvIntOrDefault(
                 "OTEL_EXPORTER_OTLP_TIMEOUT",
@@ -52,7 +52,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Telemetry
             // ============================================
             GrafanaSettings.Agent.Host = GetEnvOrDefault(
                 "GRAFANA_AGENT_HOST",
-                GrafanaSettings.Agent.Host) ?? GrafanaSettings.Agent.Host;
+                GrafanaSettings.Agent.Host);
 
             GrafanaSettings.Agent.OtlpGrpcPort = GetEnvIntOrDefault(
                 "GRAFANA_AGENT_OTLP_GRPC_PORT",
@@ -96,7 +96,7 @@ namespace TC.CloudGames.SharedKernel.Infrastructure.Telemetry
         // Helper Methods
         // ============================================
 
-        private static string? GetEnvOrDefault(string key, string? current)
+        private static string GetEnvOrDefault(string key, string current)
         {
             var envValue = Environment.GetEnvironmentVariable(key);
             return string.IsNullOrWhiteSpace(envValue) ? current : envValue;
