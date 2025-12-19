@@ -33,9 +33,32 @@
 
             var password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? _dbSettings.Password;
 
-            var connectionTimeout = _dbSettings.ConnectionTimeout;
+            var schema = Environment.GetEnvironmentVariable("DB_SCHEMA") ?? _dbSettings.Schema;
 
-            return $"Host={host};Port={port};Database={database};Username={username};Password={password};Timeout={connectionTimeout};CommandTimeout={connectionTimeout}";
+            var connectionTimeout = int.TryParse(Environment.GetEnvironmentVariable("DB_CONNECTION_TIMEOUT"), out var timeout)
+                ? timeout
+                : _dbSettings.ConnectionTimeout;
+
+            var maxPoolSize = int.TryParse(Environment.GetEnvironmentVariable("DB_MAX_POOL_SIZE"), out var poolSize)
+                ? poolSize
+                : _dbSettings.MaxPoolSize;
+
+            var minPoolSize = int.TryParse(Environment.GetEnvironmentVariable("DB_MIN_POOL_SIZE"), out var minPool)
+                ? minPool
+                : _dbSettings.MinPoolSize;
+
+            // Constrain pooling values to avoid negative or zero settings that would break connections
+            // Always clamp to safe absolute bounds, regardless of misconfigured app settings
+            if (maxPoolSize < 1)
+                maxPoolSize = 1;
+
+            if (minPoolSize < 0)
+                minPoolSize = 0;
+
+            if (minPoolSize > maxPoolSize)
+                minPoolSize = maxPoolSize;
+
+            return $"Host={host};Port={port};Database={database};Username={username};Password={password};SearchPath={schema};Timeout={connectionTimeout};CommandTimeout={connectionTimeout};Pooling=true;Minimum Pool Size={minPoolSize};Maximum Pool Size={maxPoolSize}";
         }
     }
 }

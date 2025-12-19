@@ -29,7 +29,7 @@ public static class WolverineAzureExtensions
     {
         var identifier = env.ApplicationName ?? "WolverineApp";
 
-        if (env.IsDevelopment() && !string.IsNullOrWhiteSpace(sb.ConnectionString))
+        if (!string.IsNullOrWhiteSpace(sb.ConnectionString))
         {
             return opts.UseAzureServiceBus(sb.ConnectionString, cfg =>
             {

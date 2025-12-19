@@ -11,6 +11,14 @@ public interface IElasticsearchClientProvider
     /// Gets a configured Elasticsearch client.
     /// </summary>
     ElasticsearchClient Client { get; }
+
+    /// <summary>
+    /// Gets the index name for operations.
+    /// </summary>
     string IndexName { get; }
+
+    /// <summary>
+    /// Gets the maximum search size allowed.
+    /// </summary>
     int MaxSearchSize { get; }
 }

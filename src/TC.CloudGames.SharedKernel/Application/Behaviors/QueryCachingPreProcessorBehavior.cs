@@ -28,11 +28,13 @@ namespace TC.CloudGames.SharedKernel.Application.Behaviors
 
             if (!context.HasValidationFailures)
             {
-                var cachedResult = await _cacheService.GetAsync<TResponse>(
-                GenerateCacheKey(context),
-                context.Request!.Duration,
-                context.Request.DistributedCacheDuration,
-                ct).ConfigureAwait(false);
+                var cachedResult = await _cacheService.GetAsync<TResponse>
+                (
+                    GenerateCacheKey(context),
+                    context.Request!.Duration,
+                    context.Request.DistributedCacheDuration,
+                    ct
+                ).ConfigureAwait(false);
 
                 if (cachedResult is not null)
                 {
