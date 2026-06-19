@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.Result.AspNetCore" Version="10.1.0" />
-    <PackageReference Include="Marten" Version="8.17.0" />
+    <PackageReference Include="Marten" Version="8.37.0" />
     <PackageReference Include="WolverineFx" Version="5.9.2" />
     <PackageReference Include="WolverineFx.Marten" Version="5.9.2" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.10" />
